@@ -3,84 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List of pages - awwfensive</title>
+    <title>pages — awwfensive</title>
     <style>
         body {
             margin: 0;
-            padding: 0;
-            background-color: #ffffff;
-            color: #000000;
-            font-size: 18px;
+            padding: 20px;
+            font-family: monospace;
+            background: #fdfdfd;
+            color: #222;
+            font-size: 18px; /* same base size as index */
         }
-        
         .container {
-            max-width: 650px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            line-height: 1.5;
+            max-width: 720px;
+            margin: auto;
         }
-        
         h1 {
-            font-size: 27px;
-            font-weight: bold;
-            margin: 0 0 25px 0;
+            margin: 0 0 20px;
+            font-size: 2.5rem; /* same as index page heading */
+            color: #000;
         }
-        
+        h1::before {
+            content: "$ ";
+            color: #4caf50;
+        }
         .page-entry {
-            margin-bottom: 10px;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #ccc;
             padding-bottom: 8px;
         }
-
         .page-entry:last-child {
             border-bottom: none;
         }
-
-        
         .page-title {
-            font-size: 18px;
-            font-weight: normal;
-            margin: 0 0 5px 0;
+            font-size: 1.15rem; /* matches list item size in index */
+            margin: 0 0 4px 0;
         }
-        
         .page-title a {
-            color: #000;
+            color: #0066cc;
             text-decoration: none;
         }
-        
         .page-title a:hover {
             text-decoration: underline;
         }
-        
         .page-date {
-            font-size: 14px;
+            font-size: 1rem; /* matches footer text size in index */
             color: #666;
-            margin: 0;
         }
-        
+        footer {
+            margin-top: 3rem;
+            font-size: 1rem;
+            color: #777;
+            text-align: center;
+        }
+        footer a {
+            color: #555;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>List of pages</h1>
+        <h1>pages</h1>
 
-<div class="page-entry">
-    <div class="page-title">
-        <a href="https://medium.com/@awwfensive/exploiting-cve-2025-29744-in-pg-promise-when-prepared-statements-arent-safe-5408360ce342" 
-           target="_blank" 
-           rel="noopener noreferrer">
-            Exploiting CVE-2025–29744 in pg-promise: When Prepared Statements Aren’t Safe
-        </a>
-    </div>
-    <div class="page-date">| August 2, 2025</div>
-</div>
+        <div class="page-entry">
+            <div class="page-title">
+                <a href="https://medium.com/@awwfensive/exploiting-cve-2025-29744-in-pg-promise-when-prepared-statements-arent-safe-5408360ce342" 
+                   target="_blank" 
+                   rel="noopener noreferrer">
+                    Exploiting CVE-2025–29744 in pg-promise: When Prepared Statements Aren’t Safe
+                </a>
+            </div>
+            <div class="page-date">August 2, 2025</div>
+        </div>
 
     </div>
+
+    <footer>
+        <hr style="border: none; border-top: 1px dashed #ccc; margin-bottom: 10px;">
+        <nav style="text-align: center; font-size: 1.2rem;">        <nav>
+            <a href="index.html">~/</a>
+        </nav>
+        <div style="font-size: 0.95rem; color: #666; margin-top: 5px;">
+            back.
+        </div>
+    </footer>
 </body>
-    <footer style="text-align: center; padding: 20px 0;">
-  <hr style="margin-bottom: 10px;" />
-  <nav style="display: inline-flex; gap: 1rem; align-items: center;">
-    <p style="margin: 0;"><a href="index.html">~/</a></p>
-  </nav>
-</footer>
 </html>
