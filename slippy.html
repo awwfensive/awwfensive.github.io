@@ -643,74 +643,14 @@ zip --symlinks flag.zip flag
             <div class="note">
                 <strong>Flag Captured!</strong> By chaining multiple vulnerabilities together, we've successfully compromised the application and accessed sensitive files that should have been protected by authentication and path restrictions.
             </div>
-
-            <hr class="section-divider">
-
-            <h2>Remediation Recommendations</h2>
-
-            <p>
-                This challenge exposed several critical security flaws. Here are detailed recommendations for fixing each vulnerability:
-            </p>
-
-            <h3>1. Secure ZIP Extraction</h3>
-            <pre><code>// Add -L flag to follow symlinks and convert them to regular files
-// Add -n flag to never overwrite existing files
-// Add -q flag for quiet operation (optional)
-execFile('unzip', ['-L', '-n', zipPath, '-d', userDir], (err, stdout, stderr) => {
-  fs.unlinkSync(zipPath);
-  // ...
-});
-
-// Alternative: Use a JavaScript ZIP library with better control
-const AdmZip = require('adm-zip');
-const zip = new AdmZip(zipPath);
-const zipEntries = zip.getEntries();
-
-zipEntries.forEach(entry => {
-  // Validate entry is not a symlink
-  if (entry.header.attr === 0o120000) {
-    console.log('Blocked symlink:', entry.entryName);
-    return;
-  }
-  // Validate path doesn't escape target directory
-  const targetPath = path.join(userDir, entry.entryName);
-  if (!targetPath.startsWith(userDir)) {
-    console.log('Blocked path traversal:', entry.entryName);
-    return;
-  }
-  // Extract file
-  zip.extractEntryTo(entry, userDir, false, true);
-});</code></pre>
-
-            <h3>2. Fix Path Traversal in Debug Endpoint</h3>
-            <pre><code>router.get('/debug/files', developmentOnly, (req, res) => {
-    // Sanitize and validate session_id
-    const sessionId = req.query.session_id;
-    
-    // Only allow alphanumeric characters
-    if (!/^[a-zA-Z0-9_-]+$/.test(sessionId)) {
-      return res.status(400).send('Invalid session ID format');
-    }
-    
-    const userDir = path.join(__dirname, '../uploads', sessionId);
-    
-    // Verify the resolved path is still within uploads directory
-    const resolvedPath = path.resolve(userDir);
-    const uploadsPath = path.resolve(__dirname, '../uploads');
-    
-    if (!resolvedPath.startsWith(uploadsPath + path.sep)) {
-      return res.status(400).send('Invalid path');
-    }
-    
-    fs.readdir(userDir, (err, files) => {
-      if (err) return res.status(500).send('Error reading files');
-      res.render('files', { files });
-    });
-});</code></pre>
-
-            <h3>3. Strengthen Authentication</h3>
-            <pre><code>// Remove the debug endpoint entirely in production
-if (process.env.NODE_ENV === 'production') {
-  // Don't register debug routes
-} else {
-  // In development, use proper authentication
+    <footer>
+        <hr style="border: none; border-top: 1px dashed #ccc; margin-bottom: 10px;">
+        <nav style="text-align: center; font-size: 1.2rem;">        <nav>
+            <a href="index.html">~/</a>
+        </nav>
+        <div style="font-size: 0.95rem; color: #666; margin-top: 5px;">
+            back.
+        </div>
+    </footer>
+</body>
+</html>
