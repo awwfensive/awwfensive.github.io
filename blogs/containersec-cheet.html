@@ -210,7 +210,7 @@
                 <span class="tag">kubernetes</span>
                 <span class="tag">container-escape</span>
                 <span class="tag">privilege-escalation</span>
-                <span class="tag">red-team</span>
+
             </div>
         </header>
 
@@ -219,14 +219,6 @@
             <p>
                 Containers have become the backbone of modern infrastructure, powering everything from microservices to CI/CD pipelines. But here's the uncomfortable truth: containers are not virtual machines. They're processes with fancy namespaces and cgroups, sharing the same kernel as the host. This fundamental architecture creates a fascinating attack surface for security researchers and red teamers.
             </p>
-
-            <p>
-                This guide is dense, practical, and copy-paste friendly. Whether you're pentesting containerized environments, hardening your Kubernetes cluster, or just curious about how container escapes work, you'll find enumeration commands, exploitation primitives, concrete examples, defensive configurations, and detection rules. Everything here is designed for authorized security assessments in lab environments.
-            </p>
-
-            <div class="danger">
-                <strong>Legal Notice:</strong> Use these techniques only in authorized labs, penetration tests, or security assessments. Unauthorized access to computer systems is illegal. Always obtain explicit written permission before testing any system you don't own.
-            </div>
 
             <hr class="section-divider">
 
@@ -596,122 +588,6 @@ curl -k -H "Authorization: Bearer $TOKEN" \
                 <li>Privilege escalation through eBPF vulnerabilities</li>
             </ul>
 
-            <hr class="section-divider">
-
-            <h2>Defense: Hardening Containers</h2>
-
-            <p>
-                Now let's flip perspectives and discuss how to defend against these attacks. Defense in depth is critical—no single control will stop a determined attacker.
-            </p>
-
-            <h3>Docker Security Best Practices</h3>
-
-            <pre><code># Never run privileged containers in production
-docker run --security-opt=no-new-privileges \
-  --cap-drop=ALL \
-  --cap-add=NET_BIND_SERVICE \
-  --read-only \
-  --tmpfs /tmp \
-  my-image
-
-# Never mount the Docker socket
-# If absolutely necessary, use socket proxies with whitelisted commands</code></pre>
-
-            <h3>Kubernetes Pod Security Standards</h3>
-
-            <pre><code>apiVersion: v1
-kind: Pod
-metadata:
-  name: secure-pod
-spec:
-  securityContext:
-    runAsNonRoot: true
-    runAsUser: 1000
-    fsGroup: 1000
-    seccompProfile:
-      type: RuntimeDefault
-  containers:
-  - name: app
-    image: my-image
-    securityContext:
-      allowPrivilegeEscalation: false
-      readOnlyRootFilesystem: true
-      capabilities:
-        drop:
-        - ALL
-    volumeMounts:
-    - name: tmp
-      mountPath: /tmp
-  volumes:
-  - name: tmp
-    emptyDir: {}</code></pre>
-
-            <h3>Network Policies</h3>
-
-            <pre><code>apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: deny-egress-to-metadata
-spec:
-  podSelector: {}
-  policyTypes:
-  - Egress
-  egress:
-  - to:
-    - ipBlock:
-        cidr: 0.0.0.0/0
-        except:
-        - 169.254.169.254/32  # Block cloud metadata services</code></pre>
-
-            <h3>Runtime Security</h3>
-
-            <p>
-                Consider deploying runtime security tools that monitor container behavior:
-            </p>
-
-            <ul>
-                <li><strong>Falco:</strong> Runtime threat detection for containers and Kubernetes</li>
-                <li><strong>Sysdig:</strong> Container visibility and security platform</li>
-                <li><strong>Aqua Security:</strong> Full container security lifecycle</li>
-                <li><strong>AppArmor/SELinux:</strong> Mandatory access control for containers</li>
-            </ul>
-
-            <hr class="section-divider">
-
-            <h2>Detection & Monitoring</h2>
-
-            <h3>Key Indicators of Compromise</h3>
-
-            <ul>
-                <li>Process creation inside containers accessing <code>/proc/*/root</code></li>
-                <li>Mount system calls from containers</li>
-                <li>Network connections to Kubernetes API from unusual pods</li>
-                <li>Containers attempting to access block devices</li>
-                <li>Privilege escalation attempts (setuid/setgid calls)</li>
-                <li>Unexpected file modifications in host mount paths</li>
-            </ul>
-
-            <h3>Sample Falco Rules</h3>
-
-            <pre><code>- rule: Docker Socket Accessed
-  desc: Detect access to Docker socket from container
-  condition: >
-    evt.type = open and
-    fd.name = /var/run/docker.sock and
-    container.id != host
-  output: Container accessed Docker socket (user=%user.name container=%container.name)
-  priority: CRITICAL
-
-- rule: Mount Syscall in Container
-  desc: Detect mount operations from containers
-  condition: >
-    evt.type = mount and
-    container.id != host
-  output: Mount operation from container (user=%user.name container=%container.name)
-  priority: WARNING</code></pre>
-
-            <hr class="section-divider">
-
             <h2>Lab Setup & Practice</h2>
 
             <p>
@@ -741,33 +617,6 @@ docker run -it --cap-add=SYS_ADMIN ubuntu:latest bash</code></pre>
                 <li><strong>Bad Pods:</strong> Repository of vulnerable Kubernetes pod configurations</li>
             </ul>
 
-            <hr class="section-divider">
-
-            <h2>Conclusion</h2>
-
-            <p>
-                Container security is complex because containers sit in an uncomfortable middle ground between traditional processes and virtual machines. They provide isolation that's sufficient for most operational needs but insufficient as a security boundary against determined adversaries.
-            </p>
-
-            <p>
-                The key takeaways are:
-            </p>
-
-            <ul>
-                <li>Always enumerate thoroughly—container escapes often come down to finding one misconfiguration</li>
-                <li>Understand that containers share the kernel—kernel security is container security</li>
-                <li>Defense requires layers: proper configuration, minimal capabilities, runtime monitoring, and network policies</li>
-                <li>Most container escapes exploit misconfigurations rather than zero-days</li>
-                <li>Practice these techniques only in authorized lab environments</li>
-            </ul>
-
-            <p>
-                Whether you're attacking or defending containerized infrastructure, the fundamental principle remains the same: understand the underlying architecture. Containers are not magic isolation bubbles—they're carefully orchestrated Linux primitives that can be bypassed when misconfigured.
-            </p>
-
-            <p>
-                Stay curious, stay ethical, and always test in authorized environments.
-            </p>
 
             <hr class="section-divider">
 
@@ -793,25 +642,15 @@ docker run -it --cap-add=SYS_ADMIN ubuntu:latest bash</code></pre>
                 <li><a href="https://github.com/stealthcopter/deepce" target="_blank">DeepCE - Docker Enumeration Tool</a></li>
             </ul>
 
-            <h3>Training Platforms</h3>
-
-            <ul>
-                <li><strong>Kubernetes Security Specialist (CKS):</strong> Official Kubernetes security certification</li>
-                <li><strong>Docker Security Course:</strong> Various platforms offer dedicated container security training</li>
-                <li><strong>Practical DevSecOps:</strong> Hands-on container and Kubernetes security</li>
-            </ul>
 
             <hr class="section-divider">
 
             <h2>Acknowledgments</h2>
 
             <p>
-                Container security research builds on the work of countless researchers and practitioners. Special recognition to the security community members who've documented these techniques, developed tools, and shared knowledge openly.
+                Shoutout to <a href="https://x.com/rsgbengii">@rsgbengii</a> for a wonderfull artcle on container security and awesome newsletter, never disappoints <\3
             </p>
 
-            <div class="note">
-                <strong>Feedback Welcome:</strong> If you spot errors, have suggestions, or want to share your own container escape experiences, feel free to reach out. Security research thrives on collaboration and knowledge sharing.
-            </div>
         </article>
 
         <footer>
