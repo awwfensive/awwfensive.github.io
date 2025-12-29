@@ -59,16 +59,66 @@
         footer a {
             color: #555;
         }
+        /* ===== Centered Top Header ===== */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #fdfdfd;
+    border-bottom: 2px solid #4caf50;
+    padding: 14px 0 12px;
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: monospace;
+    color: #000;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.logo::before {
+    content: "$ ";
+    color: #4caf50;
+}
+
+.nav-tabs {
+    margin-top: 8px;
+}
+
+.nav-tabs a {
+    margin: 0 14px;
+    font-size: 1.05rem;
+    text-decoration: none;
+    color: #222;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+}
+
+.nav-tabs a:hover {
+    color: #4caf50;
+    border-bottom: 2px solid #4caf50;
+}
+
     </style>
 </head>
 <body>
+    <nav class="topbar">
+    <a href="index.html" class="logo">aniket</a>
+    <div class="nav-tabs">
+        <a href="index.html">Home</a>
+        <a href="pages.html">Blogs</a>
+    </div>
+</nav>
+
     <div class="container">
         <h1>pages</h1>
         <div class="page-entry">
             <div class="page-title">
-                <a href="https://awwfensive.site/blogs/CVE-2025-55182.html" 
-                   target="_blank" 
-                   rel="noopener noreferrer">
+                <a href="https://awwfensive.site/blogs/CVE-2025-55182.html">
                         A Beginner's guide to React2Shell.
                 </a>
             </div>
@@ -76,9 +126,7 @@
         </div>
         <div class="page-entry">
             <div class="page-title">
-                <a href="https://awwfensive.site/blogs/containersec-cheet.html" 
-                   target="_blank" 
-                   rel="noopener noreferrer">
+                <a href="https://awwfensive.site/blogs/containersec-cheet.html">
                         Container Escape: From Enumeration to Host Root
                 </a>
             </div>
@@ -86,9 +134,7 @@
         </div>
         <div class="page-entry">
             <div class="page-title">
-                <a href="https://awwfensive.site/blogs/bcrypt.html" 
-                   target="_blank" 
-                   rel="noopener noreferrer">
+                <a href="https://awwfensive.site/blogs/bcrypt.html">
                     Breaking Authentication: Bcrypt Truncation & Email Normalization
                 </a>
             </div>
@@ -96,9 +142,7 @@
         </div>
         <div class="page-entry">
             <div class="page-title">
-                <a href="https://awwfensive.site/blogs/slippy.html" 
-                   target="_blank" 
-                   rel="noopener noreferrer">
+                <a href="https://awwfensive.site/blogs/slippy.html">
                     Exploiting Symlink Upload and Session Forgery
                 </a>
             </div>
@@ -106,9 +150,7 @@
         </div>
         <div class="page-entry">
             <div class="page-title">
-                <a href="https://medium.com/@awwfensive/exploiting-cve-2025-29744-in-pg-promise-when-prepared-statements-arent-safe-5408360ce342" 
-                   target="_blank" 
-                   rel="noopener noreferrer">
+                <a href="https://medium.com/@awwfensive/exploiting-cve-2025-29744-in-pg-promise-when-prepared-statements-arent-safe-5408360ce342">
                     Exploiting CVE-2025–29744 in pg-promise: When Prepared Statements Aren’t Safe
                 </a>
             </div>

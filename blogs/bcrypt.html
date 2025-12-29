@@ -202,9 +202,98 @@
         footer a:hover {
             color: #0066cc;
         }
+        /* ===== Table of Contents ===== */
+.toc {
+    margin: 2.5rem 0;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px dashed #ccc;
+}
+
+.toc h2 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+}
+
+.toc ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+}
+
+.toc li {
+    margin-bottom: 0.4rem;
+}
+
+.toc li ul {
+    list-style-type: circle;
+    margin-top: 0.3rem;
+}
+
+.toc a {
+    color: #111;
+    text-decoration: none;
+    border-bottom: 1px solid #4caf50;
+}
+
+.toc a:hover {
+    color: #4caf50;
+    border-bottom-color: #4caf50;
+}
+/* ===== Centered Top Header ===== */
+.topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #fdfdfd;
+    border-bottom: 2px solid #4caf50;
+    padding: 14px 0 12px;
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: monospace;
+    color: #000;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.logo::before {
+    content: "$ ";
+    color: #4caf50;
+}
+
+.nav-tabs {
+    margin-top: 8px;
+}
+
+.nav-tabs a {
+    margin: 0 14px;
+    font-size: 1.05rem;
+    text-decoration: none;
+    color: #222;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
+}
+
+.nav-tabs a:hover {
+    color: #4caf50;
+    border-bottom: 2px solid #4caf50;
+}
+
+
     </style>
 </head>
 <body>
+    <nav class="topbar">
+    <a href="index.html" class="logo">aniket</a>
+    <div class="nav-tabs">
+        <a href="index.html">Home</a>
+        <a href="pages.html">Blogs</a>
+    </div>
+</nav>
+
     <div class="container">
         <header>
             <h1>Breaking Authentication: Bcrypt Truncation & Email Normalization</h1>
@@ -220,6 +309,10 @@
                 <span class="tag">nodejs</span>
             </div>
         </header>
+        <nav class="toc">
+            <h2>Table of Contents</h2>
+            <ul id="toc-list"></ul>
+        </nav>
 
         <article>
             <h2>Introduction</h2>
@@ -783,5 +876,37 @@ if (rawEmail.length > 255 || normalizedEmail.length > 64) {
             back.
         </div>
     </footer>
+    <script>
+(function () {
+    const tocList = document.getElementById("toc-list");
+    const headings = document.querySelectorAll("article h2, article h3");
+
+    let currentUl = tocList;
+
+    headings.forEach((heading, index) => {
+        if (!heading.id) {
+            heading.id = heading.textContent
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")
+                .replace(/^-|-$/g, "");
+        }
+
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = `#${heading.id}`;
+        a.textContent = heading.textContent;
+        li.appendChild(a);
+
+        if (heading.tagName === "H2") {
+            currentUl = document.createElement("ul");
+            tocList.appendChild(li);
+            li.appendChild(currentUl);
+        } else {
+            currentUl.appendChild(li);
+        }
+    });
+})();
+</script>
+
 </body>
 </html>
