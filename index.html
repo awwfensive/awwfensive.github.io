@@ -8,106 +8,207 @@
     <style>
         body {
             margin: 0;
-            padding: 20px;
+            padding: 0;
             font-family: monospace;
             background: #fdfdfd;
             color: #222;
-            font-size: 18px; /* Bigger default text */
+            font-size: 18px;
+            line-height: 1.4;
         }
-        .container {
-            max-width: 720px;
-            margin: auto;
+        
+        /* ===== Centered Top Header ===== */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #fdfdfd;
+            border-bottom: 2px solid #4caf50;
+            padding: 14px 0 12px;
+            margin-bottom: 3rem;
+            text-align: center;
         }
-        h1 {
-            margin: 0 0 5px;
-            font-size: 2.5rem; /* Bigger name */
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            font-family: monospace;
             color: #000;
+            text-decoration: none;
+            display: inline-block;
         }
-        h1::before {
+
+        .logo::before {
             content: "$ ";
             color: #4caf50;
         }
+
+        .nav-tabs {
+            margin-top: 8px;
+        }
+
+        .nav-tabs a {
+            margin: 0 14px;
+            font-size: 1.05rem;
+            text-decoration: none;
+            color: #222;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 2px;
+        }
+
+        .nav-tabs a:hover {
+            color: #4caf50;
+            border-bottom: 2px solid #4caf50;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 40px 40px;
+        }
+        
+        .intro {
+            margin-bottom: 3rem;
+            padding-left: 20px;
+            border-left: 3px solid #4caf50;
+        }
+        
         .subtitle {
             color: #555;
-            font-size: 1.2rem;
-            margin-bottom: 4px;
+            font-size: 1.3rem;
+            font-style: italic;
         }
+        
         a {
             color: #0066cc;
             text-decoration: none;
             font-size: 1.1rem;
         }
+        
         a:hover {
             text-decoration: underline;
         }
-        .section-title {
-            margin-top: 2rem;
-            font-weight: bold;
-            border-bottom: 1px dashed #ccc;
-            padding-bottom: 2px;
-            color: #333;
-            font-size: 1.3rem;
+        
+        .section {
+            margin-bottom: 3rem;
         }
+        
+        .section-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #4caf50;
+        }
+        
+        .section-title::before {
+            content: "# ";
+            color: #4caf50;
+        }
+        
         ul {
             list-style-type: none;
             padding-left: 0;
+            margin: 0;
         }
+        
         li {
-            margin-bottom: 0.6rem;
-            font-size: 1.15rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            padding-left: 25px;
+            position: relative;
         }
+        
         li::before {
-            content: "→ ";
+            content: "→";
             color: #4caf50;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
         }
+        
         footer {
-            margin-top: 3rem;
-            font-size: 1rem;
-            color: #777;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px dashed #ccc;
             text-align: center;
         }
-        footer a {
-            color: #555;
-            font-size: 1rem;
+        
+        .social-links {
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-links a {
+            margin: 0 12px;
+            font-size: 1.05rem;
+        }
+        
+        .footer-message {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            color: #c00000;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px 40px;
+            }
+            
+            .intro {
+                padding-left: 15px;
+            }
+            
+            li {
+                padding-left: 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <nav class="topbar">
+        <a href="https://awwfensive.site/index.html" class="logo">aniket</a>
+        <div class="nav-tabs">
+            <a href="https://awwfensive.site/index.html">Home</a>
+            <a href="https://awwfensive.site/pages.html">Blogs</a>
+        </div>
+    </nav>
+    
     <div class="container">
-        <h1>aniket.</h1>
-        <div class="subtitle">wannabe security researcher</div>
-        <div class="subtitle">
-            <a href="https://github.com/awwfensive" target="_blank">github</a> · 
-            <a href="https://x.com/awwfensive" target="_blank">x</a> · 
-            <a href="mailto:aniketmaaurya@gmail.com">email</a> · 
-            <a href="https://awwfensive.site/pages.html">blogs</a>
+        <div class="intro">
+            <div class="subtitle">wannabe security researcher</div>
         </div>
 
-        <div class="section-title">about me</div>
-        <ul>
-            <li>Security research & philosophy</li>
-            <li><a href="https://owasp.org/www-chapter-lucknow/">OWASP Lucknow</a> Chapter Leader</li>
-            <li>Blogs at - <a href="https://awwfensive.site/pages.html">here</a></li>
-            <li><a href="https://projectinsecurity.com" target="_blank">projectinsecurity</a> &lt;3</li>
-        </ul>
+        <div class="section">
+            <div class="section-title">about me</div>
+            <ul>
+                <li>Security research & philosophy</li>
+                <li><a href="https://owasp.org/www-chapter-lucknow/">OWASP Lucknow</a> Chapter Leader</li>
+                <li>Blogs at - <a href="https://awwfensive.site/pages.html">here</a></li>
+                <li><a href="https://projectinsecurity.com" target="_blank">projectinsecurity</a> &lt;3</li>
+            </ul>
+        </div>
 
-        <div class="section-title">things I've worked on</div>
-        <ul>
-            <li><a href="https://cwee.awwfensive.site/">cWee</a>: advanced CVE searching tool built on nvdlib.</li>
-            <li><a href="https://github.com/awwfensive/cvePlayground">auditPlayground</a>: vulnerable labs for web hacking & code review</li>
-            <li><a href="https://bsidesmumbai.in/">BSidesMumbai</a> CTF 2025 (<a href="https://github.com/awwfensive/BSdiesMumbaiCTF-Repo">CTF Author</a>)</li>
-            <li><a href="https://github.com/awwfensive/JWack">JWack</a> not sure why you should use this</li>
-            <li><a href="https://github.com/awwfensive/susDLL/">susDLL</a>: craft malicious DLLs for DLL hijacking</li>
-            <li><a href="https://x.com/awwfensive/status/1427587279988482051/photo/1">TheCyberGrabs CTF</a>: CTF Author</li>
-        </ul>
+        <div class="section">
+            <div class="section-title">things I've worked on</div>
+            <ul>
+                <li><a href="https://cwee.awwfensive.site/">cWee</a>: advanced CVE searching tool built on nvdlib.</li>
+                <li><a href="https://github.com/awwfensive/cvePlayground">auditPlayground</a>: vulnerable labs for web hacking & code review</li>
+                <li><a href="https://bsidesmumbai.in/">BSidesMumbai</a> CTF 2025 (<a href="https://github.com/awwfensive/BSdiesMumbaiCTF-Repo">CTF Author</a>)</li>
+                <li><a href="https://github.com/awwfensive/JWack">JWack</a> not sure why you should use this</li>
+                <li><a href="https://github.com/awwfensive/susDLL/">susDLL</a>: craft malicious DLLs for DLL hijacking</li>
+                <li><a href="https://x.com/awwfensive/status/1427587279988482051/photo/1">TheCyberGrabs CTF</a>: CTF Author</li>
+            </ul>
+        </div>
 
-    <footer>
-        <hr style="border: none; border-top: 1px dashed #4caf50; margin-bottom: 10px;">
-        <nav style="text-align: center; font-size: 1.2rem; color: #c00000"><nav>
-            <p>trying.</p>
-        </nav>
-    </footer>
-
+        <footer>
+            <div class="social-links">
+                <a href="https://github.com/awwfensive" target="_blank">github</a> · 
+                <a href="https://x.com/awwfensive" target="_blank">x</a> · 
+                <a href="mailto:aniketmaaurya@gmail.com">email</a>
+            </div>
+            <div class="footer-message">trying.</div>
+        </footer>
     </div>
 </body>
 </html>
