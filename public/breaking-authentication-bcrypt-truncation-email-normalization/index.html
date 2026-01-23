@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
 
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -86,7 +86,7 @@ During ImaginaryCTF 2025, I tackled a very fascinating web challenge called &ldq
 <meta name="keywords" content="" />
 
 
-<meta property="og:url" content="https://awwfensive.site/breaking-authentication-bcrypt-truncation-email-normalization/">
+<meta property="og:url" content="http://localhost:1313/breaking-authentication-bcrypt-truncation-email-normalization/">
   <meta property="og:site_name" content="aniket/awwfensive">
   <meta property="og:title" content="Breaking Authentication: Bcrypt Truncation & Email Normalization">
   <meta property="og:description" content="Introduction Attack Chain Overview The Application Technology Stack Source Code Analysis User Registration Endpoint Vulnerability Analysis Vulnerability #1: Predictable Password Generation Vulnerability #2: Bcrypt’s 72-Byte Truncation Vulnerability #3: Inconsistent Email Processing Vulnerability #4: Email Normalization Behavior Exploitation Strategy Attack Requirements Constructing the Payload Step-by-Step Exploitation Step 1: Crafting the Malicious Email Step 2: Registration Step 3: Authentication Bypass Step 4: Access Granted Impact Assessment Immediate Threats Attack Scalability Real-World Scenarios Root Cause Analysis 1. Inconsistent Data Processing 2. Misunderstanding Cryptographic Primitives 3. User-Controlled Secret Components 4. Incomplete Feature Implementation Remediation Fix #1: Consistent Email Processing Fix #2: Remove User Input from Password Generation Fix #3: Validate Before Bcrypt Fix #4: Implement Proper Password Delivery Fix #5: Add Comprehensive Input Validation Lessons Learned For Developers For Security Reviewers Conclusion Introduction During ImaginaryCTF 2025, I tackled a very fascinating web challenge called “passwordless” that showcased how multiple subtle implementation flaws can combine to create a critical authentication bypass. The challenge presented a Node.js authentication system where users register with their email and receive a randomly generated temporary password—except the password delivery mechanism was never implemented.">

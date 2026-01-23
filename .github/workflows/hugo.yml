@@ -13,17 +13,27 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
+          fetch-depth: 0  # Fetch all history for .GitInfo and .Lastmod
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: 'latest'
+          hugo-version: '0.138.0'
           extended: true
 
       - name: Build
         run: |
           rm -rf public/ resources/ .hugo_build.lock
-          hugo --minify --cleanDestinationDir
+          hugo --minify --cleanDestinationDir --baseURL "https://awwfensive.site/"
+          
+      - name: Check for localhost references
+        run: |
+          if grep -r "localhost" public/; then
+            echo "Warning: localhost found in build output"
+            exit 1
+          else
+            echo "No localhost references found - build is clean"
+          fi
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
@@ -31,3 +41,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
           cname: awwfensive.site
+          force_orphan: true  # This ensures a clean deployment

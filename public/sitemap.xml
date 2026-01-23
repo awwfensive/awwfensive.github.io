@@ -2,21 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://awwfensive.site/blog/</loc>
+    <loc>http://localhost:1313/blog/</loc>
     <lastmod>2025-12-20T11:51:55+05:30</lastmod>
   </url><url>
-    <loc>https://awwfensive.site/</loc>
+    <loc>http://localhost:1313/</loc>
     <lastmod>2025-12-20T11:51:55+05:30</lastmod>
   </url><url>
-    <loc>https://awwfensive.site/react2shell-cve-2025-55182-technical-analysis/</loc>
+    <loc>http://localhost:1313/react2shell-cve-2025-55182-technical-analysis/</loc>
     <lastmod>2025-12-20T11:51:55+05:30</lastmod>
   </url><url>
-    <loc>https://awwfensive.site/container-escape-from-enumeration-to-host-root/</loc>
+    <loc>http://localhost:1313/container-escape-from-enumeration-to-host-root/</loc>
     <lastmod>2025-11-10T11:51:55+05:30</lastmod>
   </url><url>
-    <loc>https://awwfensive.site/breaking-authentication-bcrypt-truncation-email-normalization/</loc>
+    <loc>http://localhost:1313/breaking-authentication-bcrypt-truncation-email-normalization/</loc>
     <lastmod>2025-10-25T11:51:55+05:30</lastmod>
   </url><url>
-    <loc>https://awwfensive.site/projects/</loc>
+    <loc>http://localhost:1313/projects/</loc>
   </url>
 </urlset>
