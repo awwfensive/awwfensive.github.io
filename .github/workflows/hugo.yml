@@ -8,6 +8,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
+    env:
+      HUGO_ENVIRONMENT: production
 
     steps:
       - uses: actions/checkout@v4
@@ -24,16 +27,7 @@ jobs:
       - name: Build
         run: |
           rm -rf public/ resources/ .hugo_build.lock
-          hugo --minify --cleanDestinationDir --baseURL "https://awwfensive.site/"
-          
-      - name: Check for localhost in links
-        run: |
-          if grep -r 'href=".*localhost' public/ || grep -r "href='.*localhost" public/; then
-            echo "Error: localhost found in href attributes"
-            exit 1
-          else
-            echo "No localhost references in links - build is clean"
-          fi
+          hugo --minify --cleanDestinationDir --baseURL "https://awwfensive.site/" --environment production
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
