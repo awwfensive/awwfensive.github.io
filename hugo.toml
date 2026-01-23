@@ -1,0 +1,56 @@
+baseURL = "https://awwfensive.site/"
+theme = "hugo-bearblog"
+title = "aniket/awwfensive"
+author = "aniket"
+copyright = "Copyright © 2025, aniket."
+languageCode = "en-US"
+
+# publishDir = "docs"  ← REMOVE THIS LINE
+enableRobotsTXT = true
+
+disableKinds = ["taxonomy"]
+ignoreErrors = ["error-disable-taxonomy"]
+
+[permalinks]
+  blog = "/:slug/"
+
+[params]
+  description = "My personal blog"
+
+[[menu.main]]
+  name = "Home"
+  url = "/"
+  weight = 1
+
+[[menu.main]]
+  name = "Blog"
+  url = "/blog/"
+  weight = 2
+
+[[menu.main]]
+  name = "Projects"
+  url = "/projects/"
+  weight = 3
+
+[markup]
+  [markup.highlight]
+    anchorLineNos = false
+    codeFences = true
+    guessSyntax = false
+    hl_Lines = ''
+    lineAnchors = ''
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = false
+    style = 'xcode'
+    tabWidth = 4
+  
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  
+  [markup.tableOfContents]
+    endLevel = 3
+    ordered = false
+    startLevel = 2

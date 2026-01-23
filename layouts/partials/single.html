@@ -1,0 +1,14 @@
+{{ define "main" }}
+<main>
+  <article>
+    <h1>{{ .Title }}</h1>
+    <p style="color: #666;">{{ .Date.Format "January 2, 2006" }}</p>
+    
+    {{ if .TableOfContents }}
+      {{ .TableOfContents }}
+    {{ end }}
+    
+    {{ .Content }}
+  </article>
+</main>
+{{ end }}

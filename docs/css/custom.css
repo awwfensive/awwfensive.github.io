@@ -1,0 +1,20 @@
+body {
+  background-color: white !important;
+  color: #333 !important;
+}
+
+header {
+  background-color: white !important;
+}
+
+main {
+  background-color: white !important;
+}
+
+a {
+  color: #0066cc;
+}
+
+a:hover {
+  color: #004499;
+}
