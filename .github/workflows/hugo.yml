@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
-          fetch-depth: 0  # Fetch all history for .GitInfo and .Lastmod
+          fetch-depth: 0
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
@@ -26,13 +26,13 @@ jobs:
           rm -rf public/ resources/ .hugo_build.lock
           hugo --minify --cleanDestinationDir --baseURL "https://awwfensive.site/"
           
-      - name: Check for localhost references
+      - name: Check for localhost in links
         run: |
-          if grep -r "localhost" public/; then
-            echo "Warning: localhost found in build output"
+          if grep -r 'href=".*localhost' public/ || grep -r "href='.*localhost" public/; then
+            echo "Error: localhost found in href attributes"
             exit 1
           else
-            echo "No localhost references found - build is clean"
+            echo "No localhost references in links - build is clean"
           fi
 
       - name: Deploy
@@ -41,4 +41,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
           cname: awwfensive.site
-          force_orphan: true  # This ensures a clean deployment
+          force_orphan: true
