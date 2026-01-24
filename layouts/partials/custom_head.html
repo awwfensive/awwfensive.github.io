@@ -298,4 +298,32 @@ table code {
   border-radius: 3px;
   color: #24292e;
 }
+
+/* Figure and image styling */
+figure {
+  margin: 1.5rem 0;
+}
+
+figure img,
+.img-clickable {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+figure img:hover,
+.img-clickable:hover {
+  opacity: 0.8;
+}
+
+figure a img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 </style>
