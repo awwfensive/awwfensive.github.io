@@ -246,23 +246,23 @@ console.log(user["constructor"]["name"]); // "Object"
 ```javascript
 // VULNERABLE CODE - Never do this with untrusted input!
 function getUserProperty(user, propertyName) {
-  return user[propertyName];  // ❌ No validation!
+  return user[propertyName];  // (X) No validation!
 }
 
 const user = { name: "Alice", role: "admin" };
 
 // Legitimate use
-getUserProperty(user, "name");  // "Alice" ✓
+getUserProperty(user, "name");  // "Alice" (Y)
 
 // Malicious use - accessing inherited properties
-getUserProperty(user, "constructor");     // [Function: Object] ❌
-getUserProperty(user, "__proto__");       // Object.prototype ❌
-getUserProperty(user, "hasOwnProperty"); // [Function] ❌
+getUserProperty(user, "constructor");     // [Function: Object] (X)
+getUserProperty(user, "__proto__");       // Object.prototype (X)
+getUserProperty(user, "hasOwnProperty"); // [Function] (X)
 
 // SAFE CODE - Always validate
 function getUserPropertySafe(user, propertyName) {
   if (user.hasOwnProperty(propertyName)) {
-    return user[propertyName];  // ✓ Only own properties
+    return user[propertyName];  // (Y) Only own properties
   }
   return undefined;
 }
@@ -309,11 +309,11 @@ const obj = {};
 
 // Method 1: Via constructor property
 obj.constructor                    // [Function: Object]
-obj.constructor.constructor        // [Function: Function] ⚠️
+obj.constructor.constructor        // [Function: Function] (!)
 
 // Method 2: Via __proto__
 obj.__proto__.constructor          // [Function: Object]
-obj.__proto__.constructor.constructor  // [Function: Function] ⚠️
+obj.__proto__.constructor.constructor  // [Function: Function] (!)
 
 // Now you can execute code
 const FunctionConstructor = obj.constructor.constructor;
@@ -363,7 +363,7 @@ thenableCase();
 // Malicious thenable that executes code when awaited
 const maliciousThenable = {
   then: function(resolve, reject) {
-    // ⚠️ This code executes when the object is awaited!
+    // (!) This code executes when the object is awaited!
     const fs = require('fs');
     const secrets = fs.readFileSync('/etc/passwd', 'utf8');
     console.log("Stole secrets!");
@@ -479,11 +479,11 @@ When a client sends a Server Action request, `metadata[2]` contains the export n
 ```javascript
 // Legitimate use
 metadata[2] = "saveUser"
-moduleExports["saveUser"]  // ✓ Accesses the saveUser function
+moduleExports["saveUser"]  // (Y) Accesses the saveUser function
 
 // Malicious use - attacker controls metadata[2]
 metadata[2] = "constructor"
-moduleExports["constructor"]  // ✗ Accesses inherited Function constructor!
+moduleExports["constructor"]  // (X) Accesses inherited Function constructor!
 ```
 
 ### The Fix (React 19.0.1+)
@@ -502,7 +502,7 @@ function requireModule(metadata) {
     return moduleExports.__esModule ? moduleExports.default : moduleExports;
   }
   
-  // ✓ THE FIX: Check if property is owned before accessing
+  // (Y) THE FIX: Check if property is owned before accessing
   if (hasOwnProperty.call(moduleExports, metadata[2])) {
     return moduleExports[metadata[2]];
   }
