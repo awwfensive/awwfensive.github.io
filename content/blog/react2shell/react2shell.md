@@ -4,6 +4,8 @@ draft = false
 title = 'React2Shell: CVE-2025-55182 Technical Analysis'
 +++
 
+{{< figure src="/react2shell/0.png" alt="React2Shell PoC Screenshot" class="clickable-img" >}}
+
 {{< toc >}}
 
 ---
@@ -809,7 +811,7 @@ Find the vulnerable application link here: [https://github.com/awwfensive/auditP
 
 Clone the repo and run `node server.js`. This will setup the Next.js vulnerable application with default configurations.
 
-{{< figure src="/1.png" alt="React2Shell PoC Screenshot" class="clickable-img" >}}
+{{< figure src="/react2shell/1.png" alt="repo" class="clickable-img" >}}
 
 ### Step 2: Craft and Send the Exploit
 
@@ -842,7 +844,7 @@ Content-Disposition: form-data; name="2"
 ------WebKitFormBoundary--
 ```
 
-{{< figure src="/2.png" alt="React2Shell PoC Screenshot" class="clickable-img" >}}
+{{< figure src="/react2shell/2.png" alt="React2Shell PoC Screenshot" class="clickable-img" >}}
 
 The Terminal pops!
 
