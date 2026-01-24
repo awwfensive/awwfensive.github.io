@@ -840,7 +840,7 @@ Content-Disposition: form-data; name="2"
 ------WebKitFormBoundary--
 ```
 
-{{< figure src="/2.png" alt="React2Shell PoC Screenshot" link="/2.png" class="img-clickable" >}}
+{{< figure src="/2.png" alt="React2Shell PoC Screenshot" class="clickable-img" >}}
 
 The Terminal pops!
 

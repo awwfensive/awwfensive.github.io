@@ -298,14 +298,51 @@ table code {
   border-radius: 3px;
   color: #24292e;
 }
+</style>
 
-/* Figure and image styling */
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Create lightbox modal
+  const lightboxModal = document.createElement('div');
+  lightboxModal.className = 'lightbox-modal';
+  lightboxModal.innerHTML = '<div class="lightbox-content"><span class="lightbox-close">&times;</span><img id="lightbox-img" src="" alt=""></div>';
+  document.body.appendChild(lightboxModal);
+
+  // Add click handlers to clickable images
+  document.querySelectorAll('figure img').forEach(img => {
+    img.style.cursor = 'pointer';
+    img.addEventListener('click', function() {
+      document.getElementById('lightbox-img').src = this.src;
+      lightboxModal.classList.add('active');
+    });
+  });
+
+  // Close lightbox on close button click
+  document.querySelector('.lightbox-close').addEventListener('click', function() {
+    lightboxModal.classList.remove('active');
+  });
+
+  // Close lightbox on background click
+  lightboxModal.addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.classList.remove('active');
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      lightboxModal.classList.remove('active');
+    }
+  });
+});
+</script>/* Figure and image styling */
 figure {
   margin: 1.5rem 0;
 }
 
 figure img,
-.img-clickable {
+.clickable-img {
   max-width: 100%;
   width: 100%;
   height: auto;
@@ -315,15 +352,67 @@ figure img,
 }
 
 figure img:hover,
-.img-clickable:hover {
+.clickable-img:hover {
   opacity: 0.8;
 }
 
-figure a img {
-  max-width: 100%;
+/* Lightbox modal styling */
+.lightbox-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
   width: 100%;
-  height: auto;
-  display: block;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  animation: fadeIn 0.3s;
 }
+
+.lightbox-modal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90vh;
+  animation: zoomIn 0.3s;
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 85vh;
+  width: auto;
+  height: auto;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+}
+
+.lightbox-close:hover {
+  color: #ccc;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.8); }
+  to { transform: scale(1); }
+}
+
 
 </style>
