@@ -22,6 +22,7 @@ jobs:
         run: |
           rm -rf public/ resources/ .hugo_build.lock
           hugo --minify --cleanDestinationDir --baseURL "https://awwfensive.site/" --environment production
+          touch public/.nojekyll
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
