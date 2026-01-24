@@ -1,5 +1,6 @@
 # Hugo
 public/
+docs/
 resources/
 .hugo_build.lock
 
