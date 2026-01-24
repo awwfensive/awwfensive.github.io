@@ -298,45 +298,8 @@ table code {
   border-radius: 3px;
   color: #24292e;
 }
-</style>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Create lightbox modal
-  const lightboxModal = document.createElement('div');
-  lightboxModal.className = 'lightbox-modal';
-  lightboxModal.innerHTML = '<div class="lightbox-content"><span class="lightbox-close">&times;</span><img id="lightbox-img" src="" alt=""></div>';
-  document.body.appendChild(lightboxModal);
-
-  // Add click handlers to clickable images
-  document.querySelectorAll('figure img').forEach(img => {
-    img.style.cursor = 'pointer';
-    img.addEventListener('click', function() {
-      document.getElementById('lightbox-img').src = this.src;
-      lightboxModal.classList.add('active');
-    });
-  });
-
-  // Close lightbox on close button click
-  document.querySelector('.lightbox-close').addEventListener('click', function() {
-    lightboxModal.classList.remove('active');
-  });
-
-  // Close lightbox on background click
-  lightboxModal.addEventListener('click', function(e) {
-    if (e.target === this) {
-      this.classList.remove('active');
-    }
-  });
-
-  // Close on Escape key
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      lightboxModal.classList.remove('active');
-    }
-  });
-});
-</script>/* Figure and image styling */
+/* Figure and image styling */
 figure {
   margin: 1.5rem 0;
 }
@@ -413,6 +376,45 @@ figure img:hover,
   from { transform: scale(0.8); }
   to { transform: scale(1); }
 }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Create lightbox modal
+  const lightboxModal = document.createElement('div');
+  lightboxModal.className = 'lightbox-modal';
+  lightboxModal.innerHTML = '<div class="lightbox-content"><span class="lightbox-close">&times;</span><img id="lightbox-img" src="" alt=""></div>';
+  document.body.appendChild(lightboxModal);
+
+  // Add click handlers to clickable images
+  document.querySelectorAll('figure img').forEach(img => {
+    img.style.cursor = 'pointer';
+    img.addEventListener('click', function() {
+      document.getElementById('lightbox-img').src = this.src;
+      lightboxModal.classList.add('active');
+    });
+  });
+
+  // Close lightbox on close button click
+  document.querySelector('.lightbox-close').addEventListener('click', function() {
+    lightboxModal.classList.remove('active');
+  });
+
+  // Close lightbox on background click
+  lightboxModal.addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.classList.remove('active');
+    }
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      lightboxModal.classList.remove('active');
+    }
+  });
+});
+</script>
 
 
 </style>
