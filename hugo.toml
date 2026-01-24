@@ -15,7 +15,8 @@ ignoreErrors = ["error-disable-taxonomy"]
   blog = "/:slug/"
 
 [params]
-  description = "My personal blog"
+  description = "awwfensive site"
+  favicon = "/favicon.png"
 
 [[menu.main]]
   name = "Home"
