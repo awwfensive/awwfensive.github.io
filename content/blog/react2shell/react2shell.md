@@ -809,6 +809,8 @@ Find the vulnerable application link here: [https://github.com/awwfensive/auditP
 
 Clone the repo and run `node server.js`. This will setup the Next.js vulnerable application with default configurations.
 
+{{< figure src="/1.png" alt="React2Shell PoC Screenshot" class="clickable-img" >}}
+
 ### Step 2: Craft and Send the Exploit
 
 We know that:
