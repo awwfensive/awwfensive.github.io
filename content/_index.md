@@ -13,6 +13,5 @@ This site is a record of my research, experiments, and the lessons learned from 
 
 [GitHub](https://github.com/awwfensive) ·
 [X](https://x.com/awwfensive) ·
-[LinkedIn](https://www.linkedin.com/in/aniketpratapmaurya) ·
 [aniketmaaurya@gmail.com](mailto:aniketpratapmaurya@gmail.com)
 
