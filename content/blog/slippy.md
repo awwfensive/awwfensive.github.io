@@ -5,6 +5,8 @@ draft: false
 readingTime: "12 min"
 ---
 
+{{< toc >}}
+
 ## Introduction
 
 During TFC 2025 CTF, I encountered a fascinating web challenge that showcased how multiple seemingly minor vulnerabilities can be chained together to achieve complete system compromise. The application appeared simple on the surface: upload a ZIP file, extract it, and serve the contents for download. However, beneath this straightforward functionality lurked a perfect storm of security issues.
