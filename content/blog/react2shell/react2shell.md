@@ -840,7 +840,7 @@ Content-Disposition: form-data; name="2"
 ------WebKitFormBoundary--
 ```
 
-![React2Shell PoC Screenshot](/content/blog/react2shell/2.png)
+![React2Shell PoC Screenshot](2.png)
 
 The Terminal pops!
 
