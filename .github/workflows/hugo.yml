@@ -30,3 +30,4 @@ jobs:
           publish_dir: ./public
           cname: awwfensive.site
           force_orphan: true
+          keep_files: false
