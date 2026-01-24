@@ -4,6 +4,9 @@ draft = false
 title = 'Container Escape: From Enumeration to Host Root'
 +++
 
+{{< figure src="/containersec/1.jpg" alt="banner" class="clickable-img" >}}
+
+
 {{< toc >}}
 
 ---
