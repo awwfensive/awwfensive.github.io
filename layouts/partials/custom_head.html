@@ -170,6 +170,30 @@
   border: none;  /* No border */
 }
 
+/* Minimal scrollbar styling */
+.highlight pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.highlight pre::-webkit-scrollbar-track {
+  background-color: #1e1e2e;
+}
+
+.highlight pre::-webkit-scrollbar-thumb {
+  background-color: #4a4a5e;
+  border-radius: 4px;
+}
+
+.highlight pre::-webkit-scrollbar-thumb:hover {
+  background-color: #5a5a6e;
+}
+
+/* Firefox scrollbar */
+.highlight pre {
+  scrollbar-width: thin;
+  scrollbar-color: #4a4a5e #1e1e2e;
+}
+
 .highlight pre code,
 .highlight code {
   background: transparent !important;
