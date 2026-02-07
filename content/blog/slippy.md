@@ -279,7 +279,7 @@ Upload the `config.zip` file through the application's upload interface. The ser
 Navigate to `/files` and click the download button for both `env` and `server` files.
 
 **.env contents:**
-```
+```http
 SESSION_SECRET=3df35e5dd772dd98a6feb5475d0459f8e18e08a46f48ec68234173663fca377b
 ```
 
