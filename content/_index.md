@@ -3,9 +3,9 @@ title: "Home"
 ---
 
 
-I’m Aniket, a cybersecurity researcher and builder focused on offensive security. I currently work as a Security Development Intern @ [we45](https://we45.com/).
+I’m Aniket, a cybersecurity researcher and offensive security builder. I currently work as a Security Development Intern @ [we45](https://www.we45.com/), where my focus is breaking systems the way real attackers do—not the way scanners expect.
 
-My work centers on web application security, vulnerability research, and system design failures that don’t show up in scanners or compliance reports. I build [tools, design adversarial labs, and create Capture The Flag challenges](/projects) to expose how real attacks work in practice.
+My work lives in the gaps: web application security flaws, logic bugs, access control failures, and architectural weaknesses that compliance checklists and automated tools routinely miss. I [research vulnerabilities](/blog), build [exploitation tooling, design adversarial labs](/projects), and create Capture The Flag challenges that model real-world attack paths from entry point to impact.
 
 This site is a record of my research, experiments, and the lessons learned from breaking systems end-to-end.
 
