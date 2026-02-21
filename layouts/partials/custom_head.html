@@ -4,33 +4,33 @@
 
 <style>
   :root {
-    --bg: #1e1e2e;
-    --text: #cdd6f4;
+    --bg: #ffffff;
+    --text: #000000;
     --link: #ff6666;
   }
   
-  @media (prefers-color-scheme: dark) {
+  @media (prefers-color-scheme: light) {
     :root {
-      --bg: #1e1e2e;
-      --text: #cdd6f4;
+      --bg: #ffffff;
+      --text: #000000;
       --link: #ff6666;
     }
   }
   
   /* Selection styling */
   ::selection {
-    background-color: #585b70;
-    color: #cdd6f4;
+    background-color: #b3d9ff;
+    color: #000000;
   }
 
   ::-moz-selection {
-    background-color: #585b70;
-    color: #cdd6f4;
+    background-color: #b3d9ff;
+    color: #000000;
   }
   
   body {
-    background-color: #1e1e2e;
-    color: #B1BFEE;
+    background-color: #ffffff;
+    color: #333333;
     font-family: 'Roboto Mono', monospace;
     line-height: 1.6;
     font-size: 1em;
@@ -39,15 +39,15 @@
     padding: 20px;
   }
   
-  /* Force all text to use Roboto Mono and light color */
+  /* Force all text to use Roboto Mono and dark color */
   h1, h2, h3, h4, h5, h6, p, li, span, div {
-    color: #B1BFEE !important;
+    color: #000000 !important;
     font-family: 'Roboto Mono', monospace;
   }
   
-  /* Force bold and emphasized text to be light */
+  /* Force bold and emphasized text to be dark */
   strong, b, em, i, mark {
-    color: #cdd6f4 !important;
+    color: #000000 !important;
   }
   
   /* Smaller headings */
@@ -66,38 +66,41 @@
     margin-top: 1.5rem;
   }
   
-  /* Force title to be light and smaller */
+  /* Force title to be dark and smaller */
   header h1,
   header h1 a,
   header a.title,
   body > header > h1,
   body > header > h1 > a {
-    color: #cdd6f4 !important;
+    color: #000000 !important;
     text-decoration: none !important;
     font-size: 1.1em;
     font-family: 'Roboto Mono', monospace;
   }
   
   header h1 a:hover {
-    color: #cdd6f4 !important;
+    color: #000000 !important;
   }
   
-  /* Blog post titles should be light */
+  /* Blog post titles should be dark */
   article h1,
   article h2,
   main h1,
   main h2 {
-    color: #cdd6f4 !important;
+    color: #000000 !important;
   }
   
   /* Link styling */
   a {
-    color: #ff6666 !important;
-    text-decoration: underline;
+    color: #000000 !important;
+    text-decoration: none !important;
+    border-bottom: 2.5px solid #ff6666;
+    padding-bottom: 2px;
   }
   
   a:hover {
-    color: #ff4d4d !important;
+    color: #000000 !important;
+    border-bottom-color: #ff4d4d;
   }
   
   /* But not the title link */
@@ -132,7 +135,7 @@
   
   /* Simple thin line dividers */
   header {
-    border-bottom: 1px solid #343450;
+    border-bottom: 1px solid #e0e0e0;
     padding-bottom: 1rem;
     margin-bottom: 2rem;
   }
@@ -146,7 +149,7 @@
   
   /* Dividers between blog posts */
   .blog-posts article {
-    border-bottom: 1px solid #343450;
+    border-bottom: 1px solid #e0e0e0;
     padding-bottom: 1rem;
     margin-bottom: 1rem;
   }
@@ -162,7 +165,7 @@
 }
 
 .highlight pre {
-  background-color: #212132 !important;  /* Dark background */
+  background-color: #f5f5f5 !important;  /* Light gray background */
   padding: 1rem;
   border-radius: 4px;
   overflow-x: auto;
@@ -176,22 +179,22 @@
 }
 
 .highlight pre::-webkit-scrollbar-track {
-  background-color: #1e1e2e;
+  background-color: #f5f5f5;
 }
 
 .highlight pre::-webkit-scrollbar-thumb {
-  background-color: #4a4a5e;
+  background-color: #cccccc;
   border-radius: 4px;
 }
 
 .highlight pre::-webkit-scrollbar-thumb:hover {
-  background-color: #5a5a6e;
+  background-color: #999999;
 }
 
 /* Firefox scrollbar */
 .highlight pre {
   scrollbar-width: thin;
-  scrollbar-color: #4a4a5e #1e1e2e;
+  scrollbar-color: #cccccc #f5f5f5;
 }
 
 .highlight pre code,
@@ -206,8 +209,8 @@ code {
 
 /* Inline code */
 p code, li code, h1 code, h2 code, h3 code {
-  background-color: #212132 !important;
-  color: #ff6666 !important;
+  background-color: #f0f0f0 !important;
+  color: #cc0000 !important;
   padding: 2px 6px;
   border-radius: 3px;
 }
@@ -317,12 +320,15 @@ p code, li code, h1 code, h2 code, h3 code {
 }
 
 #TableOfContents a {
-  color: #ff6666 !important;
-  text-decoration: underline !important;
+  color: #000000 !important;
+  text-decoration: none !important;
+  border-bottom: 2.5px solid #ff6666 !important;
+  padding-bottom: 2px;
 }
 
 #TableOfContents a:hover {
-  color: #ff4d4d !important;
+  color: #000000 !important;
+  border-bottom-color: #ff4d4d !important;
 }
 
 /* Removed the ::after that creates the divider */
@@ -332,26 +338,27 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin: 1.5rem 0;
-  background-color: #1E1E2E;
+  background-color: #ffffff;
 }
 
 table th,
 table td {
   padding: 0.75rem;
   text-align: left;
-  border: 1px solid #343450;
+  border: 1px solid #d0d0d0;
 }
 
 table th {
-  background-color: #212132;
+  background-color: #f9f9f9;
   font-weight: bold;
+  color: #000000;
 }
 
 table code {
-  background-color: #212132;
+  background-color: #f0f0f0;
   padding: 2px 6px;
   border-radius: 3px;
-  color: #ff6666;
+  color: #cc0000;
 }
 
 /* Figure and image styling */
