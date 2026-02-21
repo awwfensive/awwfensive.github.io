@@ -1,2 +1,7 @@
 
 # Rebuild 2026-01-23 23:36
+
+# Use CSS classes for syntax highlighting (so custom colors apply)
+[markup]
+  [markup.highlight]
+    noClasses = false
