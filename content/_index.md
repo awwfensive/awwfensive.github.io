@@ -3,8 +3,8 @@ title: "Home"
 ---
 
 <section class="intro">
-  <h1>Aniket builds offensive security tools and writes the notes worth keeping.</h1>
-  <p class="intro-lede">I'm a cybersecurity researcher focused on practical exploitation, secure code review, vulnerability analysis, and small tools that make security work sharper.</p>
+  <h1>Aniket conducts security research, builds offensive security tools, and writes notes worth keeping.</h1>
+  <p class="intro-lede">I'm a cybersecurity researcher focused on practical exploitation, secure code review, vulnerability analysis, AI security, and small tools that make security work sharper.</p>
   <span class="status-pill">open to work</span>
 </section>
 
@@ -12,7 +12,7 @@ title: "Home"
   <div class="thread-item thread-now">
     <span class="thread-kicker">now</span>
     <h2>Researching and building</h2>
-    <p>CVE research, appsec labs, and offensive tooling.</p>
+    <p>CVE research and offensive tooling.</p>
   </div>
   <div class="thread-item">
     <span class="thread-kicker">Jan 2026 - May 2026</span>
