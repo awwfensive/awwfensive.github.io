@@ -2,10 +2,10 @@ baseURL = "https://awwfensive.site/"
 theme = "hugo-bearblog"
 title = "aniket/awwfensive"
 author = "aniket"
-copyright = "Copyright © 2025, aniket."
+copyright = "Copyright (c) 2025, aniket."
 languageCode = "en-US"
 
-# publishDir = "docs"  ← REMOVE THIS LINE
+# publishDir = "docs"
 enableRobotsTXT = true
 
 disableKinds = ["taxonomy"]
@@ -46,11 +46,11 @@ ignoreErrors = ["error-disable-taxonomy"]
     noClasses = false
     style = 'xcode'
     tabWidth = 4
-  
+
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
-  
+
   [markup.tableOfContents]
     endLevel = 3
     ordered = false

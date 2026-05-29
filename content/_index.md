@@ -1,19 +1,38 @@
 ---
 title: "Home"
 ---
-I’m Aniket, a cybersecurity researcher and offensive security builder.<br><i><span style="color:red; opacity:0.7; font-size:0.85em;">open to work.</span></i>
-- Ex penetration testing intern @<a href="https://www.we45.com/" style="color:red; opacity:0.7; font-size:0.85em; text-decoration:none;">we45</a>
-- [Security Writings](/blog) 
-- [Secrutiy Projects and Labs](/projects) 
 
-<br>
+<section class="intro">
+  <h1>Aniket builds offensive security tools and writes the notes worth keeping.</h1>
+  <p class="intro-lede">I'm a cybersecurity researcher focused on practical exploitation, secure code review, vulnerability analysis, and small tools that make security work sharper.</p>
+  <span class="status-pill">open to work</span>
+</section>
 
+<section class="experience-thread" aria-label="Experience">
+  <div class="thread-item thread-now">
+    <span class="thread-kicker">now</span>
+    <h2>Researching and building</h2>
+    <p>CVE research, appsec labs, and offensive tooling.</p>
+  </div>
+  <div class="thread-item">
+    <span class="thread-kicker">Jan 2026 - May 2026</span>
+    <h2>Penetration Testing Intern</h2>
+    <p><a href="https://www.we45.com/">we45</a></p>
+  </div>
+  <div class="thread-item">
+    <span class="thread-kicker">May 2025 - Dec 2025</span>
+    <h2>Security Intern</h2>
+    <p>Dark Relay Security Labs</p>
+  </div>
+</section>
 
----
+<ul class="quick-links" aria-label="Primary links">
+  <li><a href="/blog/">Security writings</a></li>
+  <li><a href="/projects/">Projects and labs</a></li>
+</ul>
 
-
-
-[GitHub](https://github.com/awwfensive) ·
-[X](https://x.com/awwfensive) ·
-[aniketmaaurya@gmail.com](mailto:aniketpratapmaurya@gmail.com)
-
+<ul class="social-links" aria-label="Contact links">
+  <li><a href="https://github.com/awwfensive">GitHub</a></li>
+  <li><a href="https://x.com/awwfensive">X</a></li>
+  <li><a href="mailto:aniketpratapmaurya@gmail.com">Email</a></li>
+</ul>

@@ -1,19 +1,18 @@
 {{ define "main" }}
-<main>
-  {{ .Content }}
-  
-  <ul style="list-style: none; padding-left: 0;">
-    {{ range .Pages.ByDate.Reverse }}
-    <li style="margin-bottom: 0.6rem;">
-      <span style="color: #5F7BDC; font-size: 0.85rem;">
-        {{ .Date.Format "2006-01-02" }}
-      </span>
-      ► 
-      <a style="font-size: 0.95rem;" href="{{ .RelPermalink }}">
-        {{ .Title }}
-      </a>
-    </li>
-    {{ end }}
-  </ul>
-</main>
+  <section class="list-page">
+    {{ .Content }}
+
+    <ul class="post-list" aria-label="Blog posts">
+      {{ range .Pages.ByDate.Reverse }}
+      <li class="post-item">
+        <a class="post-card" href="{{ .RelPermalink }}">
+          <time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">
+            {{ .Date.Format "2006-01-02" }}
+          </time>
+          <span class="post-title">{{ .Title }}</span>
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+  </section>
 {{ end }}
