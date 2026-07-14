@@ -26,11 +26,6 @@ title: "Home"
   </div>
 </section>
 
-<ul class="quick-links" aria-label="Primary links">
-  <li><a href="/blog/">Security writings</a></li>
-  <li><a href="/projects/">Projects and labs</a></li>
-</ul>
-
 <ul class="social-links" aria-label="Contact links">
   <li><a href="https://github.com/awwfensive">GitHub</a></li>
   <li><a href="https://x.com/awwfensive">X</a></li>
