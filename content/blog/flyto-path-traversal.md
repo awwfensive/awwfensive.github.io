@@ -1,5 +1,5 @@
 ---
-title: "Escaping the Recipe Book: Path Traversal in Flyto's `run_recipe`"
+title: "Breaking Flyto's MCP Recipe Runner: A Path Traversal Vulnerability"
 date: 2026-07-14
 slug: "escaping-the-recipe-book-path-traversal-in-flytos-run-recipe"
 description: "How a missing path validation check allows MCP callers to execute arbitrary YAML workflows outside Flyto's intended recipe directory"
