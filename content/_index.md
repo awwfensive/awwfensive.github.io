@@ -3,7 +3,7 @@ title: "Home"
 ---
 
 <section class="intro">
-  <h1>Aniket conducts security research, builds offensive security tools, and writes notes worth keeping.</h1>
+  <h1>Break. Build. Document.</h1>
   <p class="intro-lede">I'm a cybersecurity researcher focused on practical exploitation, secure code review, vulnerability analysis, AI security, and small tools that make security work sharper.</p>
   <span class="status-pill">open to work</span>
 </section>
