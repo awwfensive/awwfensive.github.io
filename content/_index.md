@@ -5,6 +5,11 @@ title: "Home"
 <section class="intro">
   <h1>Break. Build. Document.</h1>
   <p class="intro-lede">I'm a cybersecurity researcher focused on practical exploitation, secure code review, vulnerability analysis, AI security, and small tools that make security work sharper.</p>
+  <ul class="social-links" aria-label="Contact links">
+  <li><a href="https://github.com/awwfensive">GitHub</a></li>
+  <li><a href="https://x.com/awwfensive">X</a></li>
+  <li><a href="mailto:aniketpratapmaurya@gmail.com">Email</a></li>
+</ul>
   <span class="status-pill">open to work</span>
 </section>
 
@@ -26,8 +31,3 @@ title: "Home"
   </div>
 </section>
 
-<ul class="social-links" aria-label="Contact links">
-  <li><a href="https://github.com/awwfensive">GitHub</a></li>
-  <li><a href="https://x.com/awwfensive">X</a></li>
-  <li><a href="mailto:aniketpratapmaurya@gmail.com">Email</a></li>
-</ul>
