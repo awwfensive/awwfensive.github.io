@@ -6,7 +6,7 @@ A few security projects and labs I keep within reach.
 
 <ul class="project-list" aria-label="Projects">
   <li class="project-item">
-    <a class="project-card" href="https://cwee.awwfensive.site">
+    <a class="project-card" href="https://github.com/awwfensive/cWee">
       <span class="project-title">cWee</span>
       <p class="project-desc">Focused CVE discovery and analysis tooling built on nvdlib for searching, filtering, and exploring NVD vulnerabilities.</p>
     </a>

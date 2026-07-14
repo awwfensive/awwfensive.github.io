@@ -28,7 +28,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          cname: awwfensive.site
           force_orphan: true
           keep_files: false
           publish_branch: gh-pages
