@@ -12,7 +12,7 @@ title: "Home"
   <div class="thread-item thread-now">
     <span class="thread-kicker">now</span>
     <h2>Researching and building</h2>
-    <p>CVE research and offensive tooling.</p>
+    <p><a href="/blog/">CVE research</a> and <a href="/projects/">offensive tooling</a>.</p>
   </div>
   <div class="thread-item">
     <span class="thread-kicker">Jan 2026 - May 2026</span>
@@ -22,7 +22,7 @@ title: "Home"
   <div class="thread-item">
     <span class="thread-kicker">May 2025 - Dec 2025</span>
     <h2>Security Intern</h2>
-    <p>Dark Relay Security Labs</p>
+    <p><a href="https://www.darkrelay.com/">Dark Relay Security Labs</a></p>
   </div>
 </section>
 
