@@ -1,10 +1,15 @@
 {{ define "main" }}
   <article>
     <h1>{{ .Title }}</h1>
-    <p class="single-date">{{ .Date.Format "January 2, 2006" }}</p>
 
-    {{ if .TableOfContents }}
-      {{ .TableOfContents }}
+    {{ with .Params.banner }}
+      <figure class="clickable-img">
+        <img src="{{ . }}" alt="{{ $.Params.bannerAlt | default $.Title }}">
+      </figure>
+    {{ end }}
+
+    {{ with .TableOfContents }}
+      {{ . }}
     {{ end }}
 
     {{ .Content }}

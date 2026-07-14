@@ -4,8 +4,6 @@ draft = false
 title = 'Breaking Authentication: Bcrypt Truncation & Email Normalization'
 +++
 
-{{< toc >}}
-
 ## Introduction
 
 During ImaginaryCTF 2025, I tackled a very fascinating web challenge called "passwordless" that showcased how multiple subtle implementation flaws can combine to create a critical authentication bypass. The challenge presented a Node.js authentication system where users register with their email and receive a randomly generated temporary password—except the password delivery mechanism was never implemented.

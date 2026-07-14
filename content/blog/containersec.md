@@ -2,14 +2,9 @@
 date = '2025-11-10T11:51:55+05:30'
 draft = false
 title = 'Container Escape: From Enumeration to Host Root'
+banner = '/containersec/1.jpg'
+bannerAlt = 'banner'
 +++
-
-{{< figure src="/containersec/1.jpg" alt="banner" class="clickable-img" >}}
-
-
-{{< toc >}}
-
----
 
 Containers have become the backbone of modern infrastructure, powering everything from microservices to CI/CD pipelines. But here's the uncomfortable truth: containers are not virtual machines. They're processes with fancy namespaces and cgroups, sharing the same kernel as the host. This fundamental architecture creates a fascinating attack surface for security researchers and red teamers.
 

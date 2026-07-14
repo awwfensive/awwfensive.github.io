@@ -2,13 +2,9 @@
 date = '2025-12-20T11:51:55+05:30'
 draft = false
 title = 'React2Shell: CVE-2025-55182 Technical Analysis'
+banner = '/react2shell/0.png'
+bannerAlt = 'React2Shell PoC Screenshot'
 +++
-
-{{< figure src="/react2shell/0.png" alt="React2Shell PoC Screenshot" class="clickable-img" >}}
-
-{{< toc >}}
-
----
 
 ## Executive Summary
 
