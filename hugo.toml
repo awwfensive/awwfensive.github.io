@@ -1,4 +1,4 @@
-baseURL = "https://awwfensive.site/"
+baseURL = "https://awwfensive.github.io/"
 theme = "hugo-bearblog"
 title = "aniket/awwfensive"
 author = "aniket"
