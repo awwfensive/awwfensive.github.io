@@ -16,7 +16,7 @@ title: "Home"
   <div class="thread-item thread-now">
     <span class="thread-kicker">now</span>
     <h2>Researching and building</h2>
-    <p><a href="/blog/">CVE research</a> and <a href="/projects/">offensive tooling</a>.</p>
+    <p>open-source security research & dev</p>
     <ul>
       <li><a href="https://github.com/flytohub/flyto-core/security/advisories/GHSA-mxcc-cr6x-2mvr">GHSA-mxcc-cr6x-2mvr</a></li>
       <li><em class="more-to-come">more to come &lt;3</em></li>
