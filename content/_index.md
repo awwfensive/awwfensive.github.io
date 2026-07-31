@@ -3,6 +3,18 @@ title: "Home"
 ---
 
 <section class="intro">
+  <aside class="research-signal" aria-label="Research signal active">
+    <div class="signal-topline"><span>LIVE</span><span>0x01</span></div>
+    <div class="signal-grid" aria-hidden="true">
+      <span>research / surface</span>
+      <span>build / useful things</span>
+      <span>explore / new ventures</span>
+      <span>ship / small experiments</span>
+      <span>notes / open source</span>
+      <span>status / learning<span class="signal-cursor">_</span></span>
+    </div>
+    <div class="signal-footer"><i></i> builder signal</div>
+  </aside>
   <h1>Break. Build. Document.</h1>
   <p class="intro-lede">I'm a security researcher focused on practical exploitation, secure code review, vulnerability analysis, AI security, and small tools that make security work sharper.</p>
   <ul class="social-links" aria-label="Contact links">

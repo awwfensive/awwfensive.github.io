@@ -2,7 +2,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -789,6 +789,498 @@
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+
+<style>
+  /* Editorial research notebook treatment */
+  :root {
+    --bg: #f5f2ec;
+    --surface: #eeebe4;
+    --text: #171716;
+    --text-muted: #625f5a;
+    --text-light: #817d76;
+    --border: #d7d2c8;
+    --accent: #f15b4a;
+    --accent-hover: #c94335;
+    --green: var(--accent);
+    --shadow-sm: none;
+    --shadow-md: none;
+  }
+
+  body,
+  h1, h2, h3, h4, h5, h6,
+  p, li, span, div {
+    color: var(--text);
+  }
+
+  body {
+    max-width: 1420px;
+    padding: 42px clamp(24px, 6.7vw, 104px) 88px;
+    background: var(--bg);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  body > header {
+    position: relative;
+    margin: 0 0 clamp(78px, 11vw, 150px);
+    padding: 0 0 39px;
+    border-bottom: 1px solid var(--border);
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  .title h2 {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.05em;
+  }
+
+  .title h2::first-letter {
+    color: var(--accent);
+  }
+
+  header nav {
+    gap: clamp(1rem, 2.3vw, 2.5rem);
+  }
+
+  header nav a,
+  .thread-kicker,
+  .post-date,
+  .single-date,
+  #TableOfContents::before,
+  .article-meta {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  header nav a {
+    color: var(--text-muted) !important;
+  }
+
+  header nav a:hover,
+  header nav a:focus-visible,
+  header nav a[aria-current="page"] {
+    color: var(--accent) !important;
+    border-bottom-color: var(--accent);
+  }
+
+  a {
+    color: inherit !important;
+    border-bottom: 1px solid var(--accent);
+  }
+
+  a:hover,
+  a:focus-visible {
+    color: var(--accent) !important;
+    border-bottom-color: var(--accent);
+  }
+
+  .intro {
+    position: relative;
+    max-width: 1050px;
+    padding: 0 0 clamp(70px, 10vw, 130px);
+  }
+
+  .research-signal {
+    position: absolute;
+    top: 7.1rem;
+    left: calc(100% + clamp(1.5rem, 4vw, 5rem));
+    width: min(19vw, 225px);
+    padding: 0.85rem 0 0.75rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-light);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.61rem;
+    letter-spacing: 0.035em;
+    line-height: 1.75;
+  }
+
+  .research-signal::after {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    width: 38px;
+    height: 1px;
+    background: var(--accent);
+    content: "";
+    animation: signal-scan 4.5s ease-in-out infinite;
+  }
+
+  .intro::after {
+    position: absolute;
+    top: 22rem;
+    left: calc(100% + clamp(3rem, 9vw, 10rem));
+    width: 82px;
+    height: 82px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 25px var(--bg), inset 0 0 0 26px var(--border);
+    content: "";
+    opacity: 0.8;
+    animation: calibration-drift 8s ease-in-out infinite;
+  }
+
+  .intro > h1::after {
+    position: absolute;
+    top: 25.5rem;
+    left: calc(100% + clamp(5.25rem, 12vw, 13rem));
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 7px var(--bg), 0 0 0 8px var(--border);
+    content: "";
+    animation: marker-pulse 3.2s ease-in-out infinite;
+  }
+
+  .signal-topline,
+  .signal-footer {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-muted);
+    font-size: 0.58rem;
+    text-transform: uppercase;
+  }
+
+  .signal-topline span:first-child {
+    color: var(--accent);
+  }
+
+  .signal-grid {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0.8rem 0;
+    padding: 0.65rem 0;
+    border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  }
+
+  .signal-grid span {
+    color: var(--text-light) !important;
+    font: inherit;
+  }
+
+  .signal-footer {
+    justify-content: flex-start;
+    gap: 0.45rem;
+  }
+
+  .signal-footer i {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    margin-top: 0.36rem;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: signal-pulse 2.2s ease-in-out infinite;
+  }
+
+  .signal-cursor {
+    color: var(--accent) !important;
+    animation: cursor-blink 1s steps(2, jump-none) infinite;
+  }
+
+  @keyframes signal-scan {
+    0%, 100% { transform: translateX(0); opacity: 0.7; }
+    50% { transform: translateX(185px); opacity: 1; }
+  }
+
+  @keyframes signal-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 40%, transparent); }
+    50% { box-shadow: 0 0 0 5px transparent; }
+  }
+
+  @keyframes cursor-blink {
+    50% { opacity: 0; }
+  }
+
+  @keyframes calibration-drift {
+    0%, 100% { transform: rotate(0deg); opacity: 0.45; }
+    50% { transform: rotate(90deg); opacity: 0.82; }
+  }
+
+  @keyframes marker-pulse {
+    0%, 100% { opacity: 0.55; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1); }
+  }
+
+  .intro::before,
+  .list-page > p:first-child::before,
+  .article-meta::before {
+    display: inline-block;
+    width: 43px;
+    height: 1px;
+    margin: 0 17px 0 0;
+    background: var(--accent);
+    content: "";
+    vertical-align: middle;
+  }
+
+  .intro::before {
+    margin-bottom: 25px;
+  }
+
+  h1,
+  .intro h1 {
+    max-width: 980px;
+    margin: 0 0 1.5rem;
+    font-family: "Instrument Serif", Georgia, serif;
+    font-size: clamp(4.3rem, 10.5vw, 9.3rem);
+    font-weight: 400;
+    letter-spacing: -0.065em;
+    line-height: 0.79;
+  }
+
+  .intro-lede {
+    max-width: 59ch;
+    margin: 2.3rem 0;
+    color: var(--text-muted) !important;
+    font-size: clamp(1rem, 1.35vw, 1.25rem);
+    line-height: 1.55;
+  }
+
+  .quick-links,
+  .social-links {
+    gap: 1.6rem;
+    margin: 2.3rem 0 0;
+  }
+
+  .quick-links a,
+  .social-links a {
+    font-size: 0.77rem;
+    font-weight: 500;
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
+  }
+
+  .experience-thread {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .experience-thread::before,
+  .thread-item::before {
+    display: none;
+  }
+
+  .thread-item {
+    min-height: 245px;
+    padding: 27px clamp(18px, 2.3vw, 37px) 25px 0;
+    border-right: 1px solid var(--border);
+  }
+
+  .thread-item + .thread-item {
+    padding-left: clamp(18px, 2.3vw, 37px);
+  }
+
+  .thread-item:last-child {
+    border-right: 0;
+  }
+
+  .thread-kicker {
+    margin-bottom: 1.5rem;
+    color: var(--accent) !important;
+  }
+
+  .thread-item h2,
+  h2 {
+    margin: 0 0 0.65rem;
+    font-family: "Instrument Serif", Georgia, serif;
+    font-size: clamp(2rem, 3vw, 2.8rem);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 0.92;
+  }
+
+  .thread-item p,
+  .project-desc {
+    color: var(--text-muted) !important;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .thread-item ul {
+    margin-top: 1.25rem;
+    padding-left: 1rem;
+    font-size: 0.78rem;
+  }
+
+  .more-to-come {
+    color: var(--text-light) !important;
+  }
+
+  .list-page {
+    max-width: 1080px;
+  }
+
+  .list-page > p:first-child {
+    margin: 0 0 3rem;
+    color: var(--text-muted) !important;
+    font-size: 1.05rem;
+  }
+
+  .post-list,
+  .project-list {
+    gap: 0;
+    margin-top: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .post-item,
+  .project-item {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post-card,
+  .project-card {
+    grid-template-columns: 145px 1fr;
+    gap: 1.5rem;
+    padding: 24px 0 23px;
+  }
+
+  .project-card {
+    grid-template-columns: minmax(160px, 0.4fr) 1fr;
+  }
+
+  .post-card:hover,
+  .project-card:hover {
+    opacity: 1;
+  }
+
+  .post-title,
+  .project-title {
+    font-family: "Instrument Serif", Georgia, serif;
+    font-size: clamp(1.8rem, 3vw, 2.55rem);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+
+  article {
+    max-width: 960px;
+  }
+
+  article > h1 {
+    max-width: 980px;
+  }
+
+  .article-meta {
+    margin: 0 0 2.2rem;
+    color: var(--text-light) !important;
+  }
+
+  article p,
+  article li {
+    max-width: 65ch;
+    font-family: "Source Serif 4", Georgia, serif;
+    font-size: 1.32rem;
+    letter-spacing: 0;
+    line-height: 1.5;
+  }
+
+  article h2 {
+    margin-top: 3.6rem;
+  }
+
+  article h3 {
+    margin-top: 2.5rem;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  article strong,
+  article code,
+  article pre,
+  article table,
+  article table *,
+  #TableOfContents,
+  #TableOfContents * {
+    font-family: "IBM Plex Mono", monospace;
+  }
+
+  blockquote,
+  .note {
+    border-left-color: var(--accent);
+    background: var(--surface);
+  }
+
+  .highlight pre,
+  #TableOfContents,
+  p code,
+  li code,
+  h1 code,
+  h2 code,
+  h3 code,
+  td code {
+    border-color: var(--border);
+    background: var(--surface) !important;
+  }
+
+  .back-to-top {
+    border-color: var(--text);
+    background: var(--bg);
+    box-shadow: none;
+  }
+
+  footer {
+    margin-top: 7rem;
+    text-align: left;
+  }
+
+  @media (max-width: 720px) {
+    body > header {
+      margin-bottom: 72px;
+      padding-bottom: 24px;
+    }
+
+    .experience-thread {
+      grid-template-columns: 1fr;
+    }
+
+    .thread-item,
+    .thread-item + .thread-item {
+      min-height: 0;
+      padding: 25px 0;
+      border-right: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .thread-item:last-child {
+      border-bottom: 0;
+    }
+
+    .post-card,
+    .project-card {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    article p,
+    article li {
+      font-size: 1.2rem;
+    }
+  }
+
+  @media (max-width: 1250px) {
+    .research-signal,
+    .intro::after,
+    .intro > h1::after {
+      display: none;
     }
   }
 </style>

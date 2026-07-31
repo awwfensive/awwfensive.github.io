@@ -1,6 +1,7 @@
 {{ define "main" }}
   <article>
     <h1>{{ .Title }}</h1>
+    <p class="article-meta">Research note{{ with .Date }} / {{ .Format "02 Jan 2006" }}{{ end }}</p>
 
     {{ with .Params.banner }}
       <figure class="clickable-img">
