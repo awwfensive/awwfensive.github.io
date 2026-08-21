@@ -16,7 +16,7 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.154.5'  # Match your local version
+          hugo-version: '0.164.0'  # Match your local version
           extended: true
       - name: Build
         run: |

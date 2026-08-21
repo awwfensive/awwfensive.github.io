@@ -3,7 +3,7 @@ theme = "hugo-bearblog"
 title = "aniket/awwfensive"
 author = "aniket"
 copyright = "Copyright (c) 2025, aniket."
-locale = "en-US"
+languageCode = "en-US"
 
 # publishDir = "docs"
 enableRobotsTXT = true

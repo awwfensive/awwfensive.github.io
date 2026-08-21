@@ -1,5 +1,5 @@
 <ul class="project-list" aria-label="Projects">
-  {{ range hugo.Data.projects }}
+  {{ range site.Data.projects }}
     <li class="project-item">
       <a class="project-card" href="{{ .url }}">
         <span class="project-title">{{ .name }}</span>
