@@ -160,9 +160,10 @@ The regression tests should cover a valid bundled recipe, `../` traversal, absol
 | Before v2.26.8 | `run_recipe` accepted a caller-controlled recipe name without proving that the resolved YAML path remained beneath `RECIPES_DIR`. |
 | 14 Jul 2026 | This report documented the traversal condition, its MCP reachability, and the proposed resolved-path containment check. |
 | v2.26.6 → v2.26.8 | The [upstream comparison](https://github.com/flytohub/flyto-core/compare/v2.26.6...v2.26.8) records the code changes between the affected baseline and the release containing the remediation. |
-| CVE pending | The issue is tracked as [GHSA-mxcc-cr6x-2mvr](https://github.com/flytohub/flyto-core/security/advisories/GHSA-mxcc-cr6x-2mvr). A CVE identifier has not yet been assigned. |
+| 21 Aug 2026 | Assigned [CVE-2026-77314](https://www.cve.org/CVERecord?id=CVE-2026-77314), tracked under [GHSA-mxcc-cr6x-2mvr](https://github.com/flytohub/flyto-core/security/advisories/GHSA-mxcc-cr6x-2mvr). |
 
 ## References
 
-- [GitHub Security Advisory: GHSA-mxcc-cr6x-2mvr — CVE pending](https://github.com/flytohub/flyto-core/security/advisories/GHSA-mxcc-cr6x-2mvr)
+- [CVE-2026-77314](https://www.cve.org/CVERecord?id=CVE-2026-77314)
+- [GitHub Security Advisory: GHSA-mxcc-cr6x-2mvr](https://github.com/flytohub/flyto-core/security/advisories/GHSA-mxcc-cr6x-2mvr)
 - [flyto-core comparison: v2.26.6 to v2.26.8](https://github.com/flytohub/flyto-core/compare/v2.26.6...v2.26.8)

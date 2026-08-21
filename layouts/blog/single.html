@@ -1,18 +1,49 @@
 {{ define "main" }}
-  <article>
-    <h1>{{ .Title }}</h1>
-    <p class="article-meta">Research note{{ with .Date }} / {{ .Format "02 Jan 2006" }}{{ end }}</p>
+  <div class="post-shell">
+    <header class="post-head">
+      <h1>{{ .Title }}</h1>
+      <p class="article-meta">Research note{{ with .Date }} / {{ .Format "02 Jan 2006" }}{{ end }}</p>
 
-    {{ with .Params.banner }}
-      <figure class="clickable-img">
-        <img src="{{ . }}" alt="{{ $.Params.bannerAlt | default $.Title }}">
-      </figure>
-    {{ end }}
+      {{ with .Params.banner }}
+        <figure class="clickable-img">
+          <img src="{{ . }}" alt="{{ $.Params.bannerAlt | default $.Title }}">
+        </figure>
+      {{ end }}
+    </header>
 
+    {{/* Sits in the right rail on wide screens; falls back into the flow
+         between the banner and the body on narrow ones. */}}
     {{ with .TableOfContents }}
-      {{ . }}
+      <aside class="post-toc" aria-label="Contents">{{ . }}</aside>
     {{ end }}
 
-    {{ .Content }}
-  </article>
+    <article>
+      {{ .Content }}
+
+      {{/* Collection is date-descending, so .Next is the NEWER post. */}}
+      {{ $siblings := (where site.RegularPages "Section" "blog").ByDate.Reverse }}
+      {{ $newer := $siblings.Next . }}
+      {{ $older := $siblings.Prev . }}
+      {{ if or $older $newer }}
+        <nav class="post-nav" aria-label="More writing">
+          <div class="post-nav-slot">
+            {{ with $older }}
+              <a href="{{ .RelPermalink }}">
+                <span class="post-nav-dir">&larr; Older</span>
+                <span class="post-nav-title">{{ .Title }}</span>
+              </a>
+            {{ end }}
+          </div>
+          <div class="post-nav-slot post-nav-next">
+            {{ with $newer }}
+              <a href="{{ .RelPermalink }}">
+                <span class="post-nav-dir">Newer &rarr;</span>
+                <span class="post-nav-title">{{ .Title }}</span>
+              </a>
+            {{ end }}
+          </div>
+        </nav>
+      {{ end }}
+    </article>
+  </div>
 {{ end }}

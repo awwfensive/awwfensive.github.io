@@ -1,0 +1,16 @@
+{{ define "title" }}404 | {{ .Site.Title }}{{ end }}
+
+{{ define "main" }}
+  <section class="intro">
+    <p class="identity-line">Error <span aria-hidden="true">/</span> 404</p>
+    <h1>Not found<span class="hero-stop" aria-hidden="true">.</span></h1>
+    <p class="table-flip" aria-hidden="true">ʕノ•ᴥ•ʔノ ︵ ┻━┻</p>
+    <p class="intro-lede">That path doesn't resolve. No traversal from here &mdash; try one of these instead.</p>
+
+    <ul class="social-links" aria-label="Site sections">
+      <li><a href="{{ "" | relURL }}">Home</a></li>
+      <li><a href="{{ "blog/" | relURL }}">Blog</a></li>
+      <li><a href="{{ "projects/" | relURL }}">Projects</a></li>
+    </ul>
+  </section>
+{{ end }}

@@ -3,7 +3,7 @@ theme = "hugo-bearblog"
 title = "aniket/awwfensive"
 author = "aniket"
 copyright = "Copyright (c) 2025, aniket."
-languageCode = "en-US"
+locale = "en-US"
 
 # publishDir = "docs"
 enableRobotsTXT = true
@@ -15,7 +15,7 @@ ignoreErrors = ["error-disable-taxonomy"]
   blog = "/:slug/"
 
 [params]
-  description = "awwfensive site"
+  description = "Aniket — security researcher and builder. Vulnerability research, exploit writeups, secure code review, and open-source offensive tooling."
   favicon = "/favicon.png"
 
 [[menu.main]]
@@ -52,6 +52,6 @@ ignoreErrors = ["error-disable-taxonomy"]
       unsafe = true
 
   [markup.tableOfContents]
-    endLevel = 3
+    endLevel = 2
     ordered = false
     startLevel = 2

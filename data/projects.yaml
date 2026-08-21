@@ -1,0 +1,21 @@
+# Single source of truth for the tools on /projects/.
+# `blurb` is the terse one-liner; `desc` is the longer version.
+- name: cWee
+  url: https://github.com/awwfensive/cWee
+  blurb: CVE search and triage over the NVD, from the terminal.
+  desc: Focused CVE discovery and analysis tooling built on nvdlib for searching, filtering, and exploring NVD vulnerabilities.
+
+- name: auditPlayground
+  url: https://github.com/awwfensive/auditPlayground
+  blurb: Deliberately broken web apps for practising code review.
+  desc: Intentionally vulnerable web labs for hands-on exploitation, secure code review, and real-world vulnerability analysis.
+
+- name: JWack
+  url: https://github.com/awwfensive/JWack
+  blurb: JWT toolkit for probing token-level attack paths.
+  desc: Experimental JWT security toolkit for exploring implementation flaws, misconfigurations, and practical token-level attack paths.
+
+- name: susDLL
+  url: https://github.com/awwfensive/susDLL/
+  blurb: Crafting and analysing DLLs to study load-order abuse.
+  desc: Research tooling for crafting and analyzing DLLs to study hijacking techniques and Windows load-order abuse.
