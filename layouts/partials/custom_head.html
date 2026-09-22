@@ -89,29 +89,19 @@
 
   .top-tabs {
     display: inline-flex;
-    gap: 4px;
-    padding: 5px;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--surface) 88%, transparent);
-    backdrop-filter: blur(12px);
+    gap: 28px;
   }
 
   .top-tabs a {
-    padding: 6px 16px;
-    border-radius: 999px;
     font-size: 13.5px;
     font-weight: 500;
-    color: var(--text-muted);
-    transition: color .15s ease, background .15s ease;
+    color: var(--text-faint);
+    transition: color .15s ease;
   }
 
   .top-tabs a:hover { color: var(--text); }
 
-  .top-tabs a[aria-current="page"] {
-    background: var(--surface-2);
-    color: var(--text);
-  }
+  .top-tabs a[aria-current="page"] { color: var(--text); }
 
   main {
     width: 100%;

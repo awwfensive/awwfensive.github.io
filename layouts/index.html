@@ -103,50 +103,6 @@
   </ul>
 </section>
 
-<section class="home-block" id="work">
-  <div class="home-block-head">
-    <h2>Work</h2>
-    <a class="view-all" href="{{ "projects/" | relURL }}">View All</a>
-  </div>
-  <div class="work-grid">
-    {{ range site.Data.projects }}
-    <a class="work-card" href="{{ .url }}">
-      <div class="work-thumb">
-        <div class="work-thumb-inner">
-          <span class="work-thumb-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span class="work-thumb-name">{{ .name }}</span>
-          <span class="work-thumb-cmd">$ ./{{ .name | lower }} --help</span>
-        </div>
-      </div>
-      <div class="work-title">{{ .name }}</div>
-      <p class="work-desc">{{ .blurb }}</p>
-    </a>
-    {{ end }}
-  </div>
-</section>
-
-<section class="home-block" id="writing">
-  <div class="home-block-head">
-    <h2>Documenting my thoughts</h2>
-    <a class="view-all" href="{{ "blog/" | relURL }}">View All</a>
-  </div>
-  {{ range first 3 (where site.RegularPages "Section" "blog").ByDate.Reverse }}
-  <a class="thought-card" href="{{ .RelPermalink }}">
-    <div class="thought-thumb">
-      {{ with .Params.banner }}
-      <img src="{{ . }}" alt="" loading="lazy">
-      {{ else }}
-      <div class="thought-thumb-fallback">{{ .Title }}</div>
-      {{ end }}
-    </div>
-    <div>
-      <div class="thought-title">{{ .Title }}</div>
-      <p class="thought-excerpt">{{ .Summary | plainify | truncate 180 }}</p>
-    </div>
-  </a>
-  {{ end }}
-</section>
-
 <script>
   (function () {
     var user = 'awwfensive';
