@@ -2,7 +2,7 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "hugo-dev",
+      "name": "hugo",
       "runtimeExecutable": "hugo",
       "runtimeArgs": ["server", "--port", "1313", "--disableFastRender"],
       "port": 1313
