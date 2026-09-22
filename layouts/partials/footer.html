@@ -1,7 +1,3 @@
-<div class="term" aria-hidden="true">
-  <div class="term-bar"><i></i><i></i><i></i><span>aniket@awwfensive: ~</span></div>
-  <div class="term-body" id="term-body"></div>
-</div>
 <div class="footer-fineprint">
   <a href="https://github.com/awwfensive">github</a>
   <a href="https://x.com/awwfensive">x</a>
@@ -110,83 +106,5 @@
       });
     }
 
-    // Live terminal in the footer
-    var termBody = document.getElementById('term-body');
-    if (termBody) {
-      var SCRIPT = [
-        ['$ whoami', 'aniket — security researcher / builder'],
-        ['$ cat /etc/motd', 'break. build. document.'],
-        ['$ grep -ri "cve" ~/advisories', 'CVE-2026-77314: path traversal in flyto-core (fixed upstream)'],
-        ['$ ./hunt --next', 'scanning targets... more to come <3']
-      ];
-
-      var cursor = document.createElement('span');
-      cursor.className = 'cursor';
-
-      if (reduced) {
-        SCRIPT.forEach(function (pair) {
-          var p = document.createElement('span');
-          p.className = 't-prompt';
-          p.textContent = pair[0] + '\n';
-          var o = document.createElement('span');
-          o.className = 't-out';
-          o.textContent = pair[1] + '\n';
-          termBody.appendChild(p);
-          termBody.appendChild(o);
-        });
-        termBody.appendChild(cursor);
-      } else {
-        var li = 0;
-        var started = false;
-
-        var typeLine = function (text, cls, done) {
-          var span = document.createElement('span');
-          span.className = cls;
-          termBody.insertBefore(span, cursor);
-          var i = 0;
-          var speed = cls === 't-prompt' ? 55 : 14;
-          var step = function () {
-            span.textContent = text.slice(0, ++i);
-            if (i < text.length) setTimeout(step, speed);
-            else {
-              span.textContent += '\n';
-              setTimeout(done, cls === 't-prompt' ? 350 : 700);
-            }
-          };
-          step();
-        };
-
-        var next = function () {
-          if (li >= SCRIPT.length) {
-            setTimeout(function () {
-              termBody.textContent = '';
-              termBody.appendChild(cursor);
-              li = 0;
-              next();
-            }, 6000);
-            return;
-          }
-          var pair = SCRIPT[li++];
-          typeLine(pair[0], 't-prompt', function () {
-            typeLine(pair[1], 't-out', next);
-          });
-        };
-
-        termBody.appendChild(cursor);
-        if ('IntersectionObserver' in window) {
-          var tio = new IntersectionObserver(function (entries) {
-            if (entries[0].isIntersecting && !started) {
-              started = true;
-              tio.disconnect();
-              next();
-            }
-          }, { threshold: 0.2 });
-          tio.observe(termBody);
-        } else {
-          started = true;
-          next();
-        }
-      }
-    }
   })();
 </script>
