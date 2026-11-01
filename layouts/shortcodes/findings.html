@@ -1,0 +1,16 @@
+{{ range hugo.Data.findings }}
+<section class="finding-entry">
+  <h2>{{ .cve }}</h2>
+  <p>{{ .title }}</p>
+  <dl class="finding-facts">
+    <div><dt>Type</dt><dd>{{ .type }} / {{ .cwe }}</dd></div>
+    <div><dt>Affected</dt><dd>{{ .technology }}</dd></div>
+    <div><dt>Severity</dt><dd>{{ .severity }}</dd></div>
+    <div><dt>Disclosure</dt><dd>{{ time.Format "2 January 2006" .date }}</dd></div>
+    <div><dt>Status</dt><dd>{{ .status }}</dd></div>
+    <div><dt>Credit</dt><dd>{{ .credit }}</dd></div>
+  </dl>
+  <p>{{ .summary }}</p>
+  <p><a href="{{ .advisory }}">Public advisory ↗</a> · <a href="{{ .writeup }}">Technical write-up</a></p>
+</section>
+{{ end }}

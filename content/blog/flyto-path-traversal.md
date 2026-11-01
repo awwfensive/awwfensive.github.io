@@ -1,6 +1,14 @@
 ---
 title: "Breaking Flyto's MCP Recipe Runner: A Path Traversal Vulnerability"
 date: 2026-07-14
+summary: "A disclosed path traversal in flyto-core’s MCP recipe runner that crossed the bundled recipe boundary."
+category: "Vulnerability Research"
+status: "Published finding"
+content_type: "research"
+authors: ["Aniket"]
+indexed: true
+featured: true
+disclosure: "CVE-2026-77314 · Fixed in 2.26.8"
 slug: "escaping-the-recipe-book-path-traversal-in-flytos-run-recipe"
 description: "How a missing path validation check allows MCP callers to execute arbitrary YAML workflows outside Flyto's intended recipe directory"
 tags: ["path traversal", "vulnerability research", "MCP", "filesystem security"]

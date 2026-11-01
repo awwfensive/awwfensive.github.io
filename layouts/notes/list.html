@@ -1,0 +1,13 @@
+{{ define "main" }}
+<section class="list-page">
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+  <ul class="post-list" aria-label="Notes">
+    {{ range (where site.RegularPages "Params.content_type" "note").ByDate.Reverse }}
+      <li class="post-item">{{ partial "writing-link.html" . }}<p class="entry-meta">{{ .Params.status }}</p></li>
+    {{ else }}
+      <li class="compact-copy">No public notes yet.</li>
+    {{ end }}
+  </ul>
+</section>
+{{ end }}

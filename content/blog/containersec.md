@@ -2,6 +2,14 @@
 date = '2025-11-10T11:51:55+05:30'
 draft = false
 title = 'Container Escape: From Enumeration to Host Root'
+description = 'Container isolation boundaries, enumeration, and common escape conditions.'
+summary = 'A practical note on container boundaries and the configurations that commonly collapse them.'
+category = 'Security Engineering'
+status = 'Research note'
+content_type = 'note'
+authors = ['Aniket']
+tags = ['containers', 'isolation', 'Linux']
+indexed = true
 banner = '/containersec/1.jpg'
 bannerAlt = 'banner'
 +++

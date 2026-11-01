@@ -5,6 +5,11 @@
     <a href="{{ "" | relURL }}">Home</a>
     <a href="{{ "blog/" | relURL }}">Blog</a>
     <a href="{{ "projects/" | relURL }}">Projects</a>
+    <a href="{{ "research/" | relURL }}">Research</a>
+    <a href="{{ "findings/" | relURL }}">Findings</a>
+    <a href="{{ "notes/" | relURL }}">Notes</a>
+    <a href="{{ "about/" | relURL }}">About</a>
+    <a href="{{ "now/" | relURL }}">Now</a>
   </div>
   <button class="dock-pill" id="dock-pill" type="button" aria-haspopup="true" aria-expanded="false">
     <span class="dock-ring" aria-hidden="true"></span>
@@ -41,25 +46,37 @@
 
     // Scrollspy label on the home page
     var label = document.getElementById('dock-label');
-    var sections = [
-      ['writing', 'Writing'],
-      ['work', 'Work'],
-      ['opensource', 'Findings'],
-      ['experience', 'Experience']
-    ].map(function (s) { return [document.getElementById(s[0]), s[1]]; })
-      .filter(function (s) { return s[0]; });
+    var sections = Array.prototype.map.call(
+      document.querySelectorAll('main .home-block[id]'),
+      function (section) {
+        var heading = section.querySelector('.home-block-head h2');
+        return { element: section, label: heading ? heading.textContent.trim() : section.id };
+      }
+    );
 
     if (sections.length) {
       var spy = function () {
         var current = 'Home';
         var line = window.innerHeight * 0.4;
         for (var j = 0; j < sections.length; j++) {
-          var rect = sections[j][0].getBoundingClientRect();
-          if (rect.top <= line) { current = sections[j][1]; break; }
+          if (sections[j].element.getBoundingClientRect().top <= line) {
+            current = sections[j].label;
+          }
+        }
+        // The last section may never reach the tracking line on a tall screen.
+        var pageHeight = document.documentElement.scrollHeight;
+        if (window.scrollY <= 0) {
+          current = 'Home';
+        } else if (Math.ceil(window.scrollY + window.innerHeight) >= pageHeight - 2) {
+          current = sections[sections.length - 1].label;
         }
         label.textContent = current;
       };
       window.addEventListener('scroll', spy, { passive: true });
+      window.addEventListener('resize', spy);
+      if ('ResizeObserver' in window) {
+        new ResizeObserver(spy).observe(document.querySelector('main'));
+      }
       spy();
     }
 

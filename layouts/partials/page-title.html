@@ -1,0 +1,5 @@
+{{ $title := printf "%s | Awwfensive" .Title }}
+{{ if .IsHome }}{{ $title = "Aniket (Awwfensive) | AI Security & Vulnerability Research" }}{{ end }}
+{{ if eq .Kind "404" }}{{ $title = "Not found | Awwfensive" }}{{ end }}
+{{ with .Params.seo_title }}{{ $title = . }}{{ end }}
+{{ return $title }}

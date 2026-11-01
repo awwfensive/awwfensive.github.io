@@ -1,3 +1,8 @@
+{{ $researchStyle := resources.Get "css/research.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $researchStyle.RelPermalink }}" integrity="{{ $researchStyle.Data.Integrity }}">
+{{ $researchScript := resources.Get "js/research.js" | minify | fingerprint }}
+<script src="{{ $researchScript.RelPermalink }}" integrity="{{ $researchScript.Data.Integrity }}" defer></script>
+
 <script src="https://cdn.jsdelivr.net/gh/adryd325/oneko.js@latest/oneko.js" defer data-cat="/oneko.gif"></script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -89,7 +94,10 @@
 
   .top-tabs {
     display: inline-flex;
-    gap: 28px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 24px;
+    max-width: 580px;
   }
 
   .top-tabs a {

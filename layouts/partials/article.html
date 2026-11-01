@@ -1,0 +1,19 @@
+<div class="post-shell">
+  <header class="post-head">
+    <h1>{{ .Title }}</h1>
+    <p class="article-meta">{{ .Params.status | default "Research note" }} / {{ .Date.Format "02 Jan 2006" }} / {{ .ReadingTime }} min read{{ with .Params.authors }} / {{ delimit . ", " }}{{ end }}</p>
+    {{ with .Params.summary }}<p class="compact-copy">{{ . }}</p>{{ end }}
+    {{ with .Params.disclosure }}<p class="entry-meta">{{ . }}</p>{{ end }}
+    {{ with .Params.cover | default .Params.banner }}<figure><img src="{{ . }}" alt="{{ $.Params.cover_alt | default $.Params.bannerAlt | default $.Title }}"></figure>{{ end }}
+    {{ with .Params.links }}<p class="quiet-links">{{ range . }}<a href="{{ .url }}">{{ .title }}</a>{{ end }}</p>{{ end }}
+  </header>
+  {{ with .TableOfContents }}<aside class="post-toc" aria-label="Contents">{{ . }}</aside>{{ end }}
+  <article>{{ .Content }}</article>
+  {{ $related := where (site.RegularPages.Related .) "Params.indexed" true }}
+  {{ if ne .Params.content_type "note" }}{{ $related = where $related "Params.content_type" "ne" "note" }}{{ end }}
+  {{ $related = first 2 $related }}
+  {{ with $related }}
+    <nav class="related-writing" aria-label="Related writing"><h2>Related writing</h2><ul class="post-list">{{ range . }}<li class="post-item">{{ partial "writing-link.html" . }}</li>{{ end }}</ul></nav>
+  {{ end }}
+  <p class="quiet-links"><a href="{{ "research/" | relURL }}">All research</a><a href="{{ "notes/" | relURL }}">Notes</a></p>
+</div>

@@ -1,0 +1,26 @@
+{{ define "main" }}
+<section class="list-page" data-research-index>
+  <h1>{{ .Title }}</h1>
+  {{ .Content }}
+  {{ $entries := where site.RegularPages "Params.indexed" true }}
+  <label class="research-search">Search research<input type="search" data-search placeholder="Title, topic, or tag…" autocomplete="off"></label>
+  <div class="research-filters" aria-label="Research category">
+    <button type="button" data-filter="all" aria-pressed="true">All</button>
+    {{ range slice "AI for Security" "Security of AI" "Vulnerability Research" "Benchmarks" "Security Engineering" }}
+      <button type="button" data-filter="{{ . | urlize }}" aria-pressed="false">{{ . }}</button>
+    {{ end }}
+  </div>
+  <ul class="post-list" aria-label="Research">
+    {{ range $entries.ByDate.Reverse }}
+      {{ partial "validate-research.html" . }}
+      <li class="post-item research-entry" data-entry data-category="{{ .Params.category | urlize }}">
+        {{ partial "writing-link.html" . }}
+        <p class="entry-summary">{{ .Params.summary }}</p>
+        <p class="entry-meta">{{ .Params.status }} · {{ .Params.category }}<span class="search-tags"> · {{ delimit .Params.tags ", " }}</span></p>
+      </li>
+    {{ end }}
+  </ul>
+  <p data-empty hidden role="status" class="compact-copy">No published work matches this selection yet.</p>
+  <p class="quiet-links"><a href="{{ "notes/" | relURL }}">Notes</a><a href="{{ "blog/" | relURL }}">Original blog archive</a><a href="{{ "research/index.xml" | relURL }}">RSS</a></p>
+</section>
+{{ end }}

@@ -2,6 +2,15 @@
 date = '2025-12-20T11:51:55+05:30'
 draft = false
 title = 'React2Shell: CVE-2025-55182 Technical Analysis'
+description = 'A technical walkthrough of React Server Components deserialization and the React2Shell exploit chain.'
+summary = 'Exploring deserialization, prototype traversal, and the React2Shell exploit chain in a reproducible lab.'
+category = 'Security Engineering'
+status = 'Technical analysis'
+content_type = 'analysis'
+authors = ['Aniket']
+tags = ['React', 'deserialization', 'CVE analysis']
+indexed = true
+featured = true
 banner = '/react2shell/0.png'
 bannerAlt = 'React2Shell PoC Screenshot'
 +++

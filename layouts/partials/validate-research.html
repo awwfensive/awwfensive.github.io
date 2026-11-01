@@ -1,0 +1,6 @@
+{{ range slice "summary" "category" "status" "authors" "tags" "content_type" }}
+  {{ if not (index $.Params .) }}{{ errorf "Research entry %s is missing %s" $.File.Path . }}{{ end }}
+{{ end }}
+{{ if not (in (slice "AI for Security" "Security of AI" "Vulnerability Research" "Benchmarks" "Security Engineering") .Params.category) }}
+  {{ errorf "Invalid research category in %s: %s" .File.Path .Params.category }}
+{{ end }}

@@ -1,0 +1,22 @@
+{{ define "main" }}
+<div class="projects-page">
+  <header class="projects-heading">
+    <h1>{{ .Title }}</h1>
+    <p>{{ .Params.intro }}</p>
+  </header>
+
+  <section class="projects-featured" aria-labelledby="ongoing-label">
+    <h2 class="projects-label" id="ongoing-label">Ongoing research</h2>
+    <a class="project-feature-link" href="{{ "projects/hackbot/" | relURL }}">
+      <div class="project-feature-top"><h3>Hackbot</h3><span class="project-state">In progress</span><span class="project-arrow" aria-hidden="true">↗</span></div>
+      <p>Exploring autonomous security testing: agent harnesses, authorization boundaries, and reproducible evaluation.</p>
+      <span class="project-feature-action">Follow the research <span aria-hidden="true">→</span></span>
+    </a>
+  </section>
+
+  <section class="projects-tools" aria-labelledby="tools-label">
+    <h2 class="projects-label" id="tools-label">Tools &amp; labs</h2>
+    {{ .Content }}
+  </section>
+</div>
+{{ end }}

@@ -1,6 +1,14 @@
 ---
 title: "Exploiting Symlink Upload and Session Forgery"
 date: 2025-09-01
+description: "A CTF attack chain combining symlink upload, session forgery, proxy trust, and path traversal."
+summary: "Chaining symlink upload, secret disclosure, session forgery, and path traversal in a CTF challenge."
+category: "Vulnerability Research"
+status: "CTF note"
+content_type: "note"
+authors: ["Aniket"]
+tags: ["CTF", "symlinks", "session security"]
+indexed: true
 draft: false
 readingTime: "12 min"
 ---

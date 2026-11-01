@@ -3,7 +3,7 @@
   <img class="hero-avatar" src="{{ "favicon.png" | relURL }}" alt="Aniket's avatar" width="76" height="76">
   <h1>Hello, Aniket Here</h1>
   <p class="hero-tagline">
-    i break things in real software and write up exactly how.<span class="cursor" aria-hidden="true"></span>
+    i break software, study AI failures, and build autonomous tools.<span class="cursor" aria-hidden="true"></span>
   </p>
   <ul class="social-row" aria-label="Contact links">
     <li>
@@ -52,53 +52,64 @@
     <h2>Experience</h2>
   </div>
 
-  <details class="xp-item" open>
-    <summary>
-      <span class="xp-logo">rx</span>
-      <span class="xp-title">Independent Research</span>
-      <span class="xp-date">now</span>
-      <svg class="xp-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
-    </summary>
-    <ul class="xp-body">
-      <li>hunting bugs in open-source software and reporting them upstream</li>
-      <li>found and reported <a href="https://github.com/flytohub/flyto-core/security/advisories/GHSA-mxcc-cr6x-2mvr">CVE-2026-77314</a>, more to come &lt;3</li>
-    </ul>
-  </details>
-
-  <details class="xp-item">
-    <summary>
-      <span class="xp-logo">w45</span>
-      <span class="xp-title">we45 — Penetration Testing Intern</span>
-      <span class="xp-date">jan – may '26</span>
-      <svg class="xp-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
-    </summary>
-    <ul class="xp-body">
-      <li>tested client APIs and web applications end to end, recon through written reports</li>
-      <li>found vulnerabilities, a lot of them. peak work experience 10/10</li>
-    </ul>
-  </details>
-
-  <details class="xp-item">
-    <summary>
-      <span class="xp-logo">dr</span>
-      <span class="xp-title">Dark Relay Security Labs — Security Intern</span>
-      <span class="xp-date">may – dec '25</span>
-      <svg class="xp-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
-    </summary>
-    <ul class="xp-body">
-      <li>built the hands-on side of a security curriculum: deliberately broken apps, and the paths through them</li>
-      <li>built hacking labs, a lot of them</li>
-    </ul>
-  </details>
+  <ol class="experience-timeline" aria-label="Experience, most recent first">
+    <li class="timeline-current">
+      <details class="xp-item" open>
+        <summary>
+          <span class="xp-heading"><span class="xp-date">Now</span><span class="xp-title">Independent Security Research</span></span>
+          <svg class="xp-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+        </summary>
+        <ul class="xp-body">
+          <li>AI security, autonomous testing, and open-source vulnerability research</li>
+          <li>ongoing project: <a href="{{ "projects/hackbot/" | relURL }}">Hackbot</a> — research into autonomous security testing</li>
+          <li>found and reported <a href="https://github.com/flytohub/flyto-core/security/advisories/GHSA-mxcc-cr6x-2mvr">CVE-2026-77314</a>, more to come &lt;3</li>
+        </ul>
+      </details>
+    </li>
+    <li>
+      <details class="xp-item">
+        <summary>
+          <span class="xp-heading"><span class="xp-date"><time datetime="2026-01">Jan</time> – <time datetime="2026-05">May 2026</time></span><span class="xp-title">we45</span><span class="xp-role">Penetration Testing Intern</span></span>
+          <svg class="xp-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+        </summary>
+        <ul class="xp-body">
+          <li>tested client APIs and web applications end to end, recon through written reports</li>
+          <li>found vulnerabilities, a lot of them. peak work experience 10/10</li>
+        </ul>
+      </details>
+    </li>
+    <li>
+      <details class="xp-item">
+        <summary>
+          <span class="xp-heading"><span class="xp-date"><time datetime="2025-05">May</time> – <time datetime="2025-12">Dec 2025</time></span><span class="xp-title">Dark Relay Security Labs</span><span class="xp-role">Security Intern</span></span>
+          <svg class="xp-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+        </summary>
+        <ul class="xp-body">
+          <li>built the hands-on side of a security curriculum: deliberately broken apps, and the paths through them</li>
+          <li>built hacking labs, a lot of them</li>
+        </ul>
+      </details>
+    </li>
+  </ol>
 </section>
 
 <section class="home-block" id="opensource">
   <div class="home-block-head">
     <h2>Findings</h2>
-    <a class="view-all" href="{{ "blog/" | relURL }}">View All</a>
+    <a class="view-all" href="{{ "findings/" | relURL }}">View All</a>
   </div>
   <ul class="oss-list">
     <li><span class="oss-kind">(advisory)</span> <a href="https://github.com/flytohub/flyto-core/security/advisories/GHSA-mxcc-cr6x-2mvr">CVE-2026-77314: Path traversal in flyto-core's MCP recipe runner</a></li>
+  </ul>
+</section>
+
+<section class="home-block" id="writing">
+  <div class="home-block-head"><h2>Research &amp; tools</h2><a class="view-all" href="{{ "research/" | relURL }}">View All</a></div>
+  <ul class="oss-list" aria-label="Research and tools">
+    <li><span class="oss-kind">(ongoing)</span> <a href="{{ "projects/hackbot/" | relURL }}">Hackbot — autonomous security testing</a></li>
+    {{ range first 2 ((where (where site.RegularPages "Params.featured" true) "Params.content_type" "analysis").ByDate.Reverse) }}
+      <li><span class="oss-kind">(analysis)</span> <a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{ end }}
   </ul>
 </section>
 

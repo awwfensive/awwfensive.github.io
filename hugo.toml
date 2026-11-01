@@ -2,20 +2,23 @@ baseURL = "https://awwfensive.github.io/"
 theme = "hugo-bearblog"
 title = "aniket/awwfensive"
 author = "aniket"
-copyright = "Copyright (c) 2025, aniket."
-languageCode = "en-US"
+copyright = "Copyright (c) 2026, Aniket."
+locale = "en-US"
 
 # publishDir = "docs"
 enableRobotsTXT = true
 
-disableKinds = ["taxonomy"]
+disableKinds = ["taxonomy", "term"]
 ignoreErrors = ["error-disable-taxonomy"]
 
 [permalinks]
   blog = "/:slug/"
 
 [params]
-  description = "Aniket — security researcher and builder. Vulnerability research, exploit writeups, secure code review, and open-source offensive tooling."
+  description = "Aniket (Awwfensive) researches AI security, autonomous security testing, agent permissions, and software vulnerabilities. Read disclosures, analyses, and notes."
+  tagline = "Break. Build. Document."
+  social_image = "/images/social.png"
+  social_image_alt = "Awwfensive — Aniket. AI security and vulnerability research. Break. Build. Document."
   favicon = "/favicon.png"
 
 [[menu.main]]
@@ -32,6 +35,21 @@ ignoreErrors = ["error-disable-taxonomy"]
   name = "Projects"
   url = "/projects/"
   weight = 3
+
+[[menu.main]]
+  name = "Current focus"
+  url = "/now/"
+  weight = 4
+
+[[menu.main]]
+  name = "Notes"
+  url = "/notes/"
+  weight = 5
+
+[[menu.main]]
+  name = "About"
+  url = "/about/"
+  weight = 6
 
 [markup]
   [markup.highlight]

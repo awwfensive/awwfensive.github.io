@@ -1,0 +1,67 @@
+{{ $title := partial "page-title.html" . }}
+{{ $description := .Description | default .Params.summary | default site.Params.description | plainify | htmlUnescape }}
+{{ $cover := .Params.social_image | default .Params.cover | default site.Params.social_image }}
+{{ $coverAlt := .Params.social_image_alt | default .Params.cover_alt | default site.Params.social_image_alt }}
+{{ $siteURL := "/" | absURL }}
+{{ $personID := printf "%s#person" $siteURL }}
+{{ $websiteID := printf "%s#website" $siteURL }}
+{{ $pageID := printf "%s#webpage" .Permalink }}
+{{ $authors := .Params.authors | default (slice "Aniket") }}
+{{ $hidden := or (not hugo.IsProduction) .Draft (.PublishDate.After now) (eq .Kind "404") }}
+<meta name="description" content="{{ $description }}">
+<link rel="canonical" href="{{ .Permalink }}">
+<meta name="author" content="{{ delimit $authors ", " }}">
+<meta name="robots" content="{{ if $hidden }}noindex, nofollow{{ else }}index, follow, max-image-preview:large{{ end }}">
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="Awwfensive">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="{{ if .Params.indexed }}article{{ else }}website{{ end }}">
+<meta property="og:image" content="{{ $cover | absURL }}">
+<meta property="og:image:alt" content="{{ $coverAlt }}">
+{{ $localCover := printf "static/%s" (strings.TrimPrefix "/" $cover) }}
+{{ if fileExists $localCover }}
+  {{ $dimensions := images.Config $localCover }}
+  <meta property="og:image:width" content="{{ $dimensions.Width }}">
+  <meta property="og:image:height" content="{{ $dimensions.Height }}">
+{{ end }}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@awwfensive">
+<meta name="twitter:creator" content="@awwfensive">
+<meta name="twitter:title" content="{{ $title }}">
+<meta name="twitter:description" content="{{ $description }}">
+<meta name="twitter:image" content="{{ $cover | absURL }}">
+<meta name="twitter:image:alt" content="{{ $coverAlt }}">
+{{ if .Params.indexed }}
+  <meta property="article:published_time" content="{{ .PublishDate.Format "2006-01-02T15:04:05Z07:00" }}">
+  {{ range .Params.tags }}<meta property="article:tag" content="{{ . }}">{{ end }}
+{{ end }}
+{{ $person := dict "@type" "Person" "@id" $personID "name" "Aniket" "alternateName" "Awwfensive" "url" $siteURL "description" "Independent AI security and vulnerability researcher." "sameAs" (slice "https://github.com/awwfensive" "https://x.com/awwfensive" "https://www.linkedin.com/in/anyket/") "knowsAbout" (slice "AI security" "Vulnerability research" "Autonomous security testing" "API security") }}
+{{ $website := dict "@type" "WebSite" "@id" $websiteID "name" "Awwfensive" "url" $siteURL "publisher" (dict "@id" $personID) "inLanguage" site.Language.Locale }}
+{{ $page := dict "@type" "WebPage" "@id" $pageID "name" $title "description" $description "url" .Permalink "isPartOf" (dict "@id" $websiteID) "inLanguage" site.Language.Locale }}
+{{ if or .IsHome (eq .RelPermalink "/about/") }}
+  {{ $page = merge $page (dict "@type" "ProfilePage" "mainEntity" (dict "@id" $personID)) }}
+{{ end }}
+{{ $graph := slice $person $website }}
+{{ if .Params.indexed }}
+  {{ $authorNodes := slice }}
+  {{ range $authors }}
+    {{ if eq . "Aniket" }}{{ $authorNodes = $authorNodes | append (dict "@id" $personID) }}{{ else }}{{ $authorNodes = $authorNodes | append (dict "@type" "Person" "name" .) }}{{ end }}
+  {{ end }}
+  {{ $page = merge $page (dict "@type" "TechArticle" "headline" .Title "datePublished" (.PublishDate.Format "2006-01-02T15:04:05Z07:00") "author" $authorNodes "publisher" (dict "@id" $personID) "image" ($cover | absURL) "mainEntityOfPage" .Permalink "articleSection" .Params.category) }}
+{{ end }}
+{{ if not .IsHome }}
+  {{ $items := slice (dict "@type" "ListItem" "position" 1 "name" "Home" "item" $siteURL) }}
+  {{ if .Params.indexed }}
+    {{ $items = $items | append (dict "@type" "ListItem" "position" 2 "name" "Research" "item" ("/research/" | absURL)) }}
+  {{ else if eq .RelPermalink "/projects/hackbot/" }}
+    {{ $items = $items | append (dict "@type" "ListItem" "position" 2 "name" "Projects" "item" ("/projects/" | absURL)) }}
+  {{ end }}
+  {{ $items = $items | append (dict "@type" "ListItem" "position" (add (len $items) 1) "name" .Title "item" .Permalink) }}
+  {{ $breadcrumbID := printf "%s#breadcrumb" .Permalink }}
+  {{ $graph = $graph | append (dict "@type" "BreadcrumbList" "@id" $breadcrumbID "itemListElement" $items) }}
+  {{ $page = merge $page (dict "breadcrumb" (dict "@id" $breadcrumbID)) }}
+{{ end }}
+{{ $graph = $graph | append $page }}
+<script type="application/ld+json">{{ dict "@context" "https://schema.org" "@graph" $graph | jsonify | safeJS }}</script>

@@ -5,7 +5,7 @@
     {{ .Content }}
 
     <ul class="post-list" aria-label="Blog posts">
-      {{ range .Pages.ByDate.Reverse }}
+      {{ range (where .RegularPages "Params.content_type" "ne" "note").ByDate.Reverse }}
       <li class="post-item">
         <a class="post-card" href="{{ .RelPermalink }}">
           <time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">

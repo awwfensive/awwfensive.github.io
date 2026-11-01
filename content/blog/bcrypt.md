@@ -2,6 +2,14 @@
 date = '2025-10-25T11:51:55+05:30'
 draft = false
 title = 'Breaking Authentication: Bcrypt Truncation & Email Normalization'
+description = 'A CTF attack chain combining bcrypt truncation and inconsistent email normalization.'
+summary = "How bcrypt's 72-byte limit and inconsistent email normalization combined into a CTF authentication bypass."
+category = 'Vulnerability Research'
+status = 'CTF note'
+content_type = 'note'
+authors = ['Aniket']
+tags = ['authentication', 'bcrypt', 'input normalization']
+indexed = true
 +++
 
 ## Introduction

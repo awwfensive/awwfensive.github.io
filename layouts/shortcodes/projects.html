@@ -1,9 +1,10 @@
-<ul class="project-list" aria-label="Projects">
-  {{ range site.Data.projects }}
-    <li class="project-item">
-      <a class="project-card" href="{{ .url }}">
-        <span class="project-title">{{ .name }}</span>
-        <p class="project-desc">{{ .desc }}</p>
+<ul class="project-index" aria-label="Open-source projects">
+  {{ range hugo.Data.projects }}
+    <li>
+      <a class="project-index-link" href="{{ .url }}">
+        <div class="project-identity"><h3>{{ .name }}</h3>{{ with .status }}<span>{{ . }}</span>{{ end }}</div>
+        <p>{{ .desc }}</p>
+        <span class="project-source">GitHub <span aria-hidden="true">↗</span></span>
       </a>
     </li>
   {{ end }}

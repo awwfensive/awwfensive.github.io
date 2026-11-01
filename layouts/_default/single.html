@@ -1,7 +1,11 @@
 {{ define "main" }}
+  {{ if .Params.indexed }}
+    {{ partial "article.html" . }}
+  {{ else }}
   <article>
     <h1>{{ .Title }}</h1>
 
     {{ .Content }}
   </article>
+  {{ end }}
 {{ end }}
